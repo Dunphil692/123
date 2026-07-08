@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>岭南非遗AI通关护照 — 游戏化非遗研学成长平台</title>
+<meta name="description" content="岭南非遗AI通关护照：以游戏化闯关为核心，依托AI技术实现非遗作品智能核验、积分勋章解锁、个人成长档案生成，让非遗学习可记录、可积累、可沉淀。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== Design Tokens ===== */
+:root {
+  --ink: #1A1614;
+  --ink-soft: #3D332C;
+  --crimson: #9B1B1B;
+  --crimson-deep: #6B1212;
+  --crimson-light: #C8102E;
+  --gold: #C99A3E;
+  --gold-light: #DDB85C;
+  --gold-pale: #EFD9A8;
+  --paper: #F7F1E6;
+  --paper-dark: #EDE4D3;
+  --paper-deep: #E2D5BD;
+  --indigo: #2C4A6B;
+  --jade: #3A6B5A;
+  --white: #FFFEFB;
+  --max: 1200px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ===== Reset ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--crimson); color: var(--paper); }
+
+/* ===== Typography ===== */
+h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-height: 1.3; }
+
+/* ===== Layout ===== */
+.container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+.section { padding: 120px 0; position: relative; }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 500; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--crimson);
+  margin-bottom: 20px;
+}
+.eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--crimson); }
+.section-title { font-size: clamp(28px, 4vw, 44px); font-weight: 900; color: var(--ink); margin-bottom: 18px; letter-spacing: -0.01em; }
+.section-sub { font-size: 17px; color: var(--ink-soft); max-width: 620px; line-height: 1.8; }
+
+/* ===== Nav ===== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 18px 0;
+  background: rgba(247, 241, 230, 0);
+  backdrop-filter: blur(0px);
+  transition: all 0.4s var(--ease);
+}
+.nav.scrolled {
+  background: rgba(247, 241, 230, 0.92);
+  backdrop-filter: blur(16px);
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(155, 27, 27, 0.08);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { display: flex; align-items: center; gap: 12px; }
+.nav-seal {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--crimson); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 18px;
+  box-shadow: 0 2px 12px rgba(155, 27, 27, 0.3);
+  flex-shrink: 0;
+}
+.nav-brand-text { font-family: "Noto Serif SC", serif; font-weight: 700; font-size: 17px; color: var(--ink); letter-spacing: 0.02em; }
+.nav-brand-text span { display: block; font-size: 10px; font-weight: 400; color: var(--ink-soft); letter-spacing: 0.15em; font-family: "Noto Sans SC", sans-serif; }
+.nav-links { display: flex; align-items: center; gap: 36px; }
+.nav-links a { font-size: 14px; font-weight: 500; color: var(--ink-soft); transition: color 0.3s; position: relative; }
+.nav-links a:hover { color: var(--crimson); }
+.nav-links a::after { content: ""; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--crimson); transition: width 0.3s var(--ease); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+  background: var(--crimson); color: var(--paper) !important;
+  padding: 9px 22px; border-radius: 4px; font-weight: 500 !important;
+  transition: all 0.3s var(--ease);
+}
+.nav-cta:hover { background: var(--crimson-deep); transform: translateY(-1px); }
+.nav-cta::after { display: none; }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; padding: 6px; }
+.nav-toggle span { width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.3s; }
+
+/* ===== Hero ===== */
+.hero {
+  position: relative; min-height: 100svh; display: flex; align-items: center;
+  overflow: hidden; background: var(--ink);
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+.hero-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(105deg, rgba(26, 22, 20, 0.88) 0%, rgba(26, 22, 20, 0.55) 45%, rgba(26, 22, 20, 0.25) 100%);
+}
+.hero-content { position: relative; z-index: 2; padding: 120px 0 80px; width: 100%; }
+.hero-inner { max-width: 640px; }
+.hero-stamp {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 7px 16px; border: 1.5px solid var(--gold);
+  border-radius: 100px; margin-bottom: 28px;
+  font-size: 13px; color: var(--gold-light); letter-spacing: 0.1em;
+  opacity: 0; animation: fadeUp 0.8s var(--ease) 0.2s forwards;
+}
+.hero-stamp .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.hero h1 {
+  font-size: clamp(38px, 6.5vw, 68px); font-weight: 900; color: var(--paper);
+  line-height: 1.12; letter-spacing: -0.01em; margin-bottom: 10px;
+  opacity: 0; animation: fadeUp 0.8s var(--ease) 0.35s forwards;
+}
+.hero h1 .accent { color: var(--gold-light); }
+.hero-tagline {
+  font-size: clamp(16px, 2vw, 20px); color: rgba(247, 241, 230, 0.8);
+  font-weight: 300; margin-bottom: 28px;
+  opacity: 0; animation: fadeUp 0.8s var(--ease) 0.5s forwards;
+}
+.hero-desc {
+  font-size: 16px; color: rgba(247, 241, 230, 0.65); line-height: 1.8;
+  max-width: 500px; margin-bottom: 40px;
+  opacity: 0; animation: fadeUp 0.8s var(--ease) 0.65s forwards;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.8s var(--ease) 0.8s forwards; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--crimson); color: var(--paper);
+  padding: 15px 34px; border-radius: 4px; font-weight: 500; font-size: 15px;
+  transition: all 0.35s var(--ease); border: none; cursor: pointer;
+}
+.btn-primary:hover { background: var(--crimson-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200, 16, 46, 0.35); }
+.btn-primary svg { transition: transform 0.3s; }
+.btn-primary:hover svg { transform: translateX(4px); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: transparent; color: var(--paper);
+  padding: 15px 34px; border-radius: 4px; font-weight: 500; font-size: 15px;
+  border: 1.5px solid rgba(247, 241, 230, 0.3); cursor: pointer;
+  transition: all 0.35s var(--ease);
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold-light); }
+.hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; opacity: 0; animation: fadeIn 1s ease 1.2s forwards; }
+.hero-scroll span { font-size: 11px; color: rgba(247, 241, 230, 0.5); letter-spacing: 0.2em; }
+.hero-scroll .line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(247,241,230,0.4), transparent); animation: scrollLine 2s ease infinite; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scrollLine { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 50.01% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ===== Reveal Animation ===== */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ===== Pain Points ===== */
+.pain { background: var(--paper); }
+.pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 64px; border-top: 1px solid var(--paper-deep); }
+.pain-item { padding: 48px 36px 48px 0; border-right: 1px solid var(--paper-deep); position: relative; }
+.pain-item:last-child { border-right: none; padding-right: 0; }
+.pain-item:not(:first-child) { padding-left: 36px; }
+.pain-num { font-family: "Noto Serif SC", serif; font-size: 52px; font-weight: 900; color: var(--crimson); opacity: 0.15; line-height: 1; margin-bottom: 16px; }
+.pain-item h3 { font-size: 22px; margin-bottom: 12px; color: var(--ink); }
+.pain-item p { font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+.pain-quote {
+  margin-top: 64px; text-align: center; padding: 48px;
+  background: var(--paper-dark); border-radius: 8px; position: relative;
+}
+.pain-quote::before, .pain-quote::after {
+  content: ""; position: absolute; top: -1px; height: 4px; background: var(--crimson);
+}
+.pain-quote::before { left: 0; width: 60px; }
+.pain-quote::after { right: 0; width: 60px; }
+.pain-quote p { font-family: "Noto Serif SC", serif; font-size: clamp(22px, 3vw, 30px); font-weight: 700; color: var(--ink); letter-spacing: 0.05em; }
+.pain-quote p span { color: var(--crimson); }
+
+/* ===== Features ===== */
+.features { background: var(--ink); color: var(--paper); }
+.features .eyebrow { color: var(--gold-light); }
+.features .eyebrow::before { background: var(--gold-light); }
+.features .section-title { color: var(--paper); }
+.features .section-sub { color: rgba(247, 241, 230, 0.6); }
+.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin-top: 64px; background: rgba(247, 241, 230, 0.08); border: 1px solid rgba(247, 241, 230, 0.08); }
+.feature-card { background: var(--ink); padding: 48px 40px; transition: background 0.4s var(--ease); position: relative; overflow: hidden; }
+.feature-card:hover { background: #252019; }
+.feature-icon {
+  width: 56px; height: 56px; border-radius: 12px;
+  background: rgba(201, 154, 62, 0.12); color: var(--gold-light);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px; transition: all 0.4s var(--ease);
+}
+.feature-card:hover .feature-icon { background: var(--gold); color: var(--ink); transform: scale(1.05); }
+.feature-card h3 { font-size: 24px; color: var(--paper); margin-bottom: 14px; }
+.feature-card p { font-size: 15px; color: rgba(247, 241, 230, 0.6); line-height: 1.8; }
+.feature-tag { display: inline-block; margin-top: 18px; padding: 4px 12px; font-size: 12px; color: var(--gold-light); border: 1px solid rgba(221, 184, 92, 0.3); border-radius: 100px; letter-spacing: 0.08em; }
+
+/* ===== Heritage ===== */
+.heritage { background: var(--paper); }
+.heritage-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-top: 64px; }
+.heritage-card {
+  position: relative; border-radius: 10px; overflow: hidden;
+  aspect-ratio: 4 / 3; cursor: pointer;
+  box-shadow: 0 4px 24px rgba(26, 22, 20, 0.08);
+}
+.heritage-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease); }
+.heritage-card:hover img { transform: scale(1.06); }
+.heritage-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26, 22, 20, 0.9) 0%, rgba(26, 22, 20, 0.2) 60%, transparent 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 32px; transition: background 0.4s;
+}
+.heritage-card:hover .heritage-overlay { background: linear-gradient(to top, rgba(26, 22, 20, 0.92) 0%, rgba(26, 22, 20, 0.5) 70%, rgba(26, 22, 20, 0.2) 100%); }
+.heritage-stamp {
+  position: absolute; top: 24px; right: 24px;
+  width: 54px; height: 54px; border-radius: 50%;
+  border: 2px solid var(--gold-light);
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 14px;
+  color: var(--gold-light); background: rgba(26, 22, 20, 0.4);
+  backdrop-filter: blur(4px); transform: rotate(-12deg);
+  transition: transform 0.4s var(--ease);
+}
+.heritage-card:hover .heritage-stamp { transform: rotate(0deg) scale(1.1); border-color: var(--gold); background: var(--crimson); }
+.heritage-overlay h3 { font-size: 26px; color: var(--paper); margin-bottom: 8px; }
+.heritage-overlay p { font-size: 14px; color: rgba(247, 241, 230, 0.75); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.5s var(--ease), margin-top 0.5s; }
+.heritage-card:hover .heritage-overlay p { max-height: 100px; margin-top: 4px; }
+.heritage-meta { display: flex; gap: 16px; margin-top: 16px; opacity: 0; transform: translateY(10px); transition: all 0.4s var(--ease) 0.1s; }
+.heritage-card:hover .heritage-meta { opacity: 1; transform: translateY(0); }
+.heritage-meta span { font-size: 12px; color: var(--gold-light); padding: 4px 10px; border: 1px solid rgba(221, 184, 92, 0.4); border-radius: 100px; }
+
+/* ===== Flow / Process ===== */
+.flow { background: var(--paper-dark); position: relative; overflow: hidden; }
+.flow::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--paper-deep), transparent); }
+.flow-steps { margin-top: 72px; position: relative; }
+.flow-line { position: absolute; top: 40px; left: 10%; right: 10%; height: 2px; background: repeating-linear-gradient(to right, var(--crimson) 0, var(--crimson) 8px, transparent 8px, transparent 16px); z-index: 0; }
+.flow-track { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; position: relative; z-index: 1; }
+.flow-step { text-align: center; }
+.flow-circle {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--paper); border: 2px solid var(--crimson);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 24px; position: relative;
+  transition: all 0.4s var(--ease);
+}
+.flow-circle svg { color: var(--crimson); transition: all 0.4s; }
+.flow-step:hover .flow-circle { background: var(--crimson); transform: translateY(-6px); box-shadow: 0 12px 32px rgba(155, 27, 27, 0.25); }
+.flow-step:hover .flow-circle svg { color: var(--paper); }
+.flow-step h4 { font-size: 17px; margin-bottom: 8px; color: var(--ink); }
+.flow-step p { font-size: 13px; color: var(--ink-soft); line-height: 1.6; padding: 0 8px; }
+.flow-step-num { position: absolute; top: -6px; right: -6px; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--ink); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: "Noto Serif SC", serif; }
+
+/* ===== Value ===== */
+.value { background: var(--paper); }
+.value-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 64px; }
+.value-card { padding: 48px; border-radius: 10px; position: relative; overflow: hidden; }
+.value-card.dark { background: var(--crimson-deep); color: var(--paper); }
+.value-card.light { background: var(--paper-dark); border: 1px solid var(--paper-deep); }
+.value-card .val-icon { width: 48px; height: 48px; margin-bottom: 24px; }
+.value-card.dark .val-icon { color: var(--gold-light); }
+.value-card.light .val-icon { color: var(--crimson); }
+.value-card h3 { font-size: 24px; margin-bottom: 16px; }
+.value-card.dark h3 { color: var(--paper); }
+.value-card p { font-size: 15px; line-height: 1.9; }
+.value-card.dark p { color: rgba(247, 241, 230, 0.75); }
+.value-card.light p { color: var(--ink-soft); }
+.value-list { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+.value-list li { list-style: none; font-size: 14px; display: flex; align-items: flex-start; gap: 10px; }
+.value-card.dark .value-list li { color: rgba(247, 241, 230, 0.7); }
+.value-card.light .value-list li { color: var(--ink-soft); }
+.value-list li::before { content: "◆"; font-size: 10px; margin-top: 3px; }
+.value-card.dark .value-list li::before { color: var(--gold-light); }
+.value-card.light .value-list li::before { color: var(--crimson); }
+
+/* ===== Users ===== */
+.users { background: var(--ink); color: var(--paper); }
+.users .eyebrow { color: var(--gold-light); }
+.users .eyebrow::before { background: var(--gold-light); }
+.users .section-title { color: var(--paper); }
+.users .section-sub { color: rgba(247, 241, 230, 0.6); }
+.users-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
+.user-card { padding: 40px 32px; border: 1px solid rgba(247, 241, 230, 0.1); border-radius: 10px; transition: all 0.4s var(--ease); }
+.user-card:hover { border-color: var(--gold); background: rgba(201, 154, 62, 0.05); transform: translateY(-4px); }
+.user-card .u-icon { width: 44px; height: 44px; color: var(--gold-light); margin-bottom: 20px; }
+.user-card h4 { font-size: 20px; color: var(--paper); margin-bottom: 10px; }
+.user-card p { font-size: 14px; color: rgba(247, 241, 230, 0.55); line-height: 1.7; }
+.user-card .u-tag { display: inline-block; margin-top: 16px; font-size: 12px; color: var(--gold-light); padding: 4px 12px; border: 1px solid rgba(221, 184, 92, 0.25); border-radius: 100px; }
+
+/* ===== CTA ===== */
+.cta { background: var(--crimson-deep); position: relative; overflow: hidden; text-align: center; padding: 100px 0; }
+.cta::before { content: ""; position: absolute; inset: 0; background: url("assets/images/hero-lingnan.jpg") center / cover; opacity: 0.12; }
+.cta-inner { position: relative; z-index: 1; }
+.cta h2 { font-size: clamp(30px, 5vw, 52px); color: var(--paper); font-weight: 900; margin-bottom: 20px; }
+.cta h2 .gold { color: var(--gold-light); }
+.cta p { font-size: 17px; color: rgba(247, 241, 230, 0.7); max-width: 540px; margin: 0 auto 40px; line-height: 1.8; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ===== Footer ===== */
+.footer { background: var(--ink); color: rgba(247, 241, 230, 0.5); padding: 64px 0 32px; }
+.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(247, 241, 230, 0.08); }
+.footer-brand .nav-brand-text { color: var(--paper); }
+.footer-brand .nav-brand-text span { color: rgba(247, 241, 230, 0.4); }
+.footer-brand p { font-size: 14px; line-height: 1.8; margin-top: 20px; max-width: 320px; }
+.footer-col h5 { font-size: 13px; color: var(--paper); font-weight: 500; margin-bottom: 16px; letter-spacing: 0.05em; }
+.footer-col a { display: block; font-size: 14px; margin-bottom: 10px; transition: color 0.3s; }
+.footer-col a:hover { color: var(--gold-light); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; font-size: 13px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .section { padding: 80px 0; }
+  .container { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--paper); padding: 24px; gap: 18px; border-bottom: 1px solid var(--paper-deep); }
+  .pain-grid { grid-template-columns: 1fr; }
+  .pain-item { border-right: none; border-bottom: 1px solid var(--paper-deep); padding: 32px 0 !important; }
+  .pain-item:last-child { border-bottom: none; }
+  .features-grid { grid-template-columns: 1fr; }
+  .heritage-grid { grid-template-columns: 1fr; }
+  .flow-track { grid-template-columns: 1fr 1fr; gap: 40px 20px; }
+  .flow-line { display: none; }
+  .value-grid { grid-template-columns: 1fr; }
+  .users-grid { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+@media (max-width: 520px) {
+  .flow-track { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; }
+  .hero-actions { flex-direction: column; }
+  .btn-primary, .btn-ghost { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Nav ===== -->
+<nav class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="nav-seal">遗</div>
+      <div class="nav-brand-text">岭南非遗AI通关护照<span>LINGNAN HERITAGE PASSPORT</span></div>
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#features">核心功能</a>
+      <a href="#heritage">非遗项目</a>
+      <a href="#flow">闯关流程</a>
+      <a href="#value">价值意义</a>
+      <a href="#cta" class="nav-cta">开启研学</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <img src="assets/images/hero-lingnan.jpg" alt="岭南非遗文化" loading="eager">
+  </div>
+  <div class="hero-content">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-stamp">
+          <span class="dot"></span>
+          <span>社会公益赛道 · 岭南非遗数字化</span>
+        </div>
+        <h1>岭南非遗<span class="accent">AI通关护照</span></h1>
+        <p class="hero-tagline">游戏化非遗研学成长平台</p>
+        <p class="hero-desc">以游戏化闯关为核心，依托AI技术实现非遗作品智能核验、积分勋章解锁、个人成长档案生成——让非遗学习可记录、可积累、可沉淀。</p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn-primary">
+            开启研学之旅
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#features" class="btn-ghost">了解平台</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ===== Pain Points ===== -->
+<section class="section pain" id="pain">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">行业痛点</div>
+      <h2 class="section-title">非遗研学，不应止于"体验一次"</h2>
+      <p class="section-sub">当下中小学生非遗研学普遍存在一次性体验、记忆留存弱、缺乏持续参与动力的问题。体验结束便无后续沉淀，难以形成长效学习成果。</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-item reveal reveal-delay-1">
+        <div class="pain-num">01</div>
+        <h3>形式单一，无跟踪</h3>
+        <p>传统非遗研学仅停留在单次体验层面，活动结束后无后续学习跟踪与成果记录，学生学完即忘。</p>
+      </div>
+      <div class="pain-item reveal reveal-delay-2">
+        <div class="pain-num">02</div>
+        <h3>积极性低，缺动力</h3>
+        <p>学生参与积极性参差不齐，缺乏持续探索非遗文化的内在驱动力，难以形成长期学习习惯。</p>
+      </div>
+      <div class="pain-item reveal reveal-delay-3">
+        <div class="pain-num">03</div>
+        <h3>成果零散，难留存</h3>
+        <p>研学成果无法系统化留存，学生缺少可用于综合素质评价、评优展示的官方成长素材。</p>
+      </div>
+    </div>
+    <div class="pain-quote reveal reveal-delay-4">
+      <p>走过 · 看过 · <span>忘过</span> —— 这是非遗研学最真实的写照</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Features ===== -->
+<section class="section features" id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">核心功能</div>
+      <h2 class="section-title">四大引擎，驱动非遗学习闭环</h2>
+      <p class="section-sub">从体验、核验到积累、展示，构建完整的非遗研学成长链路，让每一次学习都有迹可循。</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <h3>AI智能核验</h3>
+        <p>学生上传非遗作品后，AI自动识别工艺特征、完成度与创意表达，给出智能评分与个性化反馈，替代人工逐一审阅，大幅提升核验效率。</p>
+        <span class="feature-tag">作品识别 · 智能评分</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+        </div>
+        <h3>游戏化闯关</h3>
+        <p>将广彩、醒狮、扎染、掐丝珐琅等岭南非遗项目设计为层层递进的闯关任务，每完成一项研学体验即解锁对应关卡，以游戏机制激发探索欲望。</p>
+        <span class="feature-tag">关卡进阶 · 任务驱动</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <h3>积分勋章解锁</h3>
+        <p>完成闯关、提交作品、参与互动均可获得积分，累积解锁专属非遗勋章与成就等级，让学生在收集与成就中持续投入，形成正向激励循环。</p>
+        <span class="feature-tag">积分体系 · 成就系统</span>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        </div>
+        <h3>个人成长档案</h3>
+        <p>系统自动汇聚学生的研学记录、作品成果、勋章成就，一键生成标准化成长档案，可直接用于综合素质评价与评优展示，省去繁琐整理流程。</p>
+        <span class="feature-tag">自动归档 · 一键导出</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Heritage Projects ===== -->
+<section class="section heritage" id="heritage">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">非遗项目</div>
+      <h2 class="section-title">四大岭南非遗，等你通关</h2>
+      <p class="section-sub">精选最具代表性的岭南非物质文化遗产项目，每一项都是一段跨越时空的文化对话。</p>
+    </div>
+    <div class="heritage-grid">
+      <div class="heritage-card reveal reveal-delay-1">
+        <img src="assets/images/heritage-guangcai.jpg" alt="广彩">
+        <div class="heritage-stamp">广彩</div>
+        <div class="heritage-overlay">
+          <h3>广彩瓷烧制技艺</h3>
+          <p>广州织金彩瓷，以绚彩华丽、金碧辉煌著称，是海上丝绸之路上的文化名片。</p>
+          <div class="heritage-meta">
+            <span>国家级非遗</span>
+            <span>3个关卡</span>
+          </div>
+        </div>
+      </div>
+      <div class="heritage-card reveal reveal-delay-2">
+        <img src="assets/images/heritage-xingshi.jpg" alt="醒狮">
+        <div class="heritage-stamp">醒狮</div>
+        <div class="heritage-overlay">
+          <h3>广东醒狮</h3>
+          <p>南狮代表，融武术、舞蹈、音乐于一体，威武勇猛，是岭南节庆文化的灵魂。</p>
+          <div class="heritage-meta">
+            <span>国家级非遗</span>
+            <span>4个关卡</span>
+          </div>
+        </div>
+      </div>
+      <div class="heritage-card reveal reveal-delay-3">
+        <img src="assets/images/heritage-zharan.jpg" alt="扎染">
+        <div class="heritage-stamp">扎染</div>
+        <div class="heritage-overlay">
+          <h3>传统扎染技艺</h3>
+          <p>以线缝扎、染缸浸染，蓝白相间间尽显自然之美，每一件作品都是独一无二。</p>
+          <div class="heritage-meta">
+            <span>省级非遗</span>
+            <span>3个关卡</span>
+          </div>
+        </div>
+      </div>
+      <div class="heritage-card reveal reveal-delay-4">
+        <img src="assets/images/heritage-qiasi.jpg" alt="掐丝珐琅">
+        <div class="heritage-stamp">珐琅</div>
+        <div class="heritage-overlay">
+          <h3>掐丝珐琅工艺</h3>
+          <p>铜胎掐丝、填釉烧制，色彩瑰丽、工艺精绝，承载着皇家匠人的百年智慧。</p>
+          <div class="heritage-meta">
+            <span>国家级非遗</span>
+            <span>5个关卡</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Flow / Process ===== -->
+<section class="section flow" id="flow">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">闯关流程</div>
+      <h2 class="section-title">五步通关，学习有迹可循</h2>
+      <p class="section-sub">从线下体验到线上沉淀，每一个环节都让非遗学习更加立体、可追溯。</p>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-line"></div>
+      <div class="flow-track">
+        <div class="flow-step reveal reveal-delay-1">
+          <div class="flow-circle">
+            <span class="flow-step-num">1</span>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h4>线下体验</h4>
+          <p>参与广彩、醒狮等非遗研学活动</p>
+        </div>
+        <div class="flow-step reveal reveal-delay-2">
+          <div class="flow-circle">
+            <span class="flow-step-num">2</span>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <h4>作品上传</h4>
+          <p>拍照上传研学作品至平台</p>
+        </div>
+        <div class="flow-step reveal reveal-delay-3">
+          <div class="flow-circle">
+            <span class="flow-step-num">3</span>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <h4>AI核验</h4>
+          <p>智能识别评分，解锁对应关卡</p>
+        </div>
+        <div class="flow-step reveal reveal-delay-4">
+          <div class="flow-circle">
+            <span class="flow-step-num">4</span>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <h4>勋章解锁</h4>
+          <p>获得积分，累积成就与专属勋章</p>
+        </div>
+        <div class="flow-step reveal reveal-delay-4">
+          <div class="flow-circle">
+            <span class="flow-step-num">5</span>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          </div>
+          <h4>档案生成</h4>
+          <p>自动归档，一键导出成长档案</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Value ===== -->
+<section class="section value" id="value">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">价值与意义</div>
+      <h2 class="section-title">让非遗学习真正落地生根</h2>
+      <p class="section-sub">不止于一次体验，而是将非遗文化融入青少年的成长轨迹，产生持续的社会价值。</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card dark reveal reveal-delay-1">
+        <svg class="val-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        <h3>效率与成长价值</h3>
+        <p>将碎片化的非遗单次体验转化为系统化、可持续的成长过程，通过AI打分、勋章解锁、档案生成的闭环机制，激发学生自主学习非遗文化的积极性。</p>
+        <ul class="value-list">
+          <li>一键生成标准化研学成果档案</li>
+          <li>省去学生整理素材、老师统计成果的繁琐流程</li>
+          <li>大幅提升美育研学工作效率</li>
+        </ul>
+      </div>
+      <div class="value-card light reveal reveal-delay-2">
+        <svg class="val-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <h3>社会公益文化价值</h3>
+        <p>创新非遗文化传播与美育教学模式，打通校园研学与日常兴趣学习的壁垒，让岭南非遗文化以年轻化、趣味化的形式扎根青少年群体。</p>
+        <ul class="value-list">
+          <li>助力非遗文化传承与普及</li>
+          <li>推动中小学美育素质教育落地</li>
+          <li>具备极强的推广价值与社会意义</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Users ===== -->
+<section class="section users" id="users">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">目标用户</div>
+      <h2 class="section-title">为三类核心人群而生</h2>
+      <p class="section-sub">覆盖非遗研学的完整生态，连接学生、教师与研学机构。</p>
+    </div>
+    <div class="users-grid">
+      <div class="user-card reveal reveal-delay-1">
+        <svg class="u-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5"/></svg>
+        <h4>中小学学生</h4>
+        <p>在游戏化闯关中获得成就感，让非遗学习从被动体验变为主动探索，积累属于自己的文化成长档案。</p>
+        <span class="u-tag">主要使用者</span>
+      </div>
+      <div class="user-card reveal reveal-delay-2">
+        <svg class="u-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7h-9M14 17H5M17 3a4 4 0 010 8 4 4 0 010-8zM7 13a4 4 0 010 8 4 4 0 010-8z"/></svg>
+        <h4>学校教师</h4>
+        <p>负责非遗美育教学的老师可借助平台跟踪学生研学进度，一键获取班级成果统计，告别手工整理的低效流程。</p>
+        <span class="u-tag">教学管理</span>
+      </div>
+      <div class="user-card reveal reveal-delay-3">
+        <svg class="u-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M3 7v14M21 7v14M6 21V10M10 21V10M14 21V10M18 21V10M3 7l9-4 9 4"/></svg>
+        <h4>研学机构</h4>
+        <p>研学机构从业者可借助平台延伸服务链路，将单次活动转化为持续学习关系，提升课程附加值与用户粘性。</p>
+        <span class="u-tag">生态合作</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta" id="cta">
+  <div class="container cta-inner">
+    <div class="reveal">
+      <h2>让每一次非遗体验<span class="gold">都成为成长</span></h2>
+      <p>岭南非遗AI通关护照，以游戏化闯关重新定义非遗研学——可记录、可积累、可沉淀，让岭南文化在青少年心中生根发芽。</p>
+      <div class="cta-actions">
+        <a href="#" class="btn-primary" onclick="alert('平台即将上线，敬请期待！');return false;">
+          立即开启研学之旅
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#heritage" class="btn-ghost">浏览非遗项目</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-brand">
+          <div class="nav-seal">遗</div>
+          <div class="nav-brand-text">岭南非遗AI通关护照<span>LINGNAN HERITAGE PASSPORT</span></div>
+        </a>
+        <p>游戏化非遗研学成长平台，以AI技术赋能岭南非遗文化传承，让非遗学习可记录、可积累、可沉淀。</p>
+      </div>
+      <div class="footer-col">
+        <h5>平台功能</h5>
+        <a href="#features">AI智能核验</a>
+        <a href="#features">游戏化闯关</a>
+        <a href="#features">积分勋章系统</a>
+        <a href="#features">成长档案生成</a>
+      </div>
+      <div class="footer-col">
+        <h5>非遗项目</h5>
+        <a href="#heritage">广彩瓷烧制技艺</a>
+        <a href="#heritage">广东醒狮</a>
+        <a href="#heritage">传统扎染技艺</a>
+        <a href="#heritage">掐丝珐琅工艺</a>
+      </div>
+      <div class="footer-col">
+        <h5>关于我们</h5>
+        <a href="#value">价值与意义</a>
+        <a href="#users">目标用户</a>
+        <a href="#flow">闯关流程</a>
+        <a href="#cta">加入我们</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 岭南非遗AI通关护照 · 社会公益赛道项目</span>
+      <span>让非遗学习可记录、可积累、可沉淀</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Mobile menu
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Smooth anchor offset
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id === '#') return;
+    const el = document.querySelector(id);
+    if (el) {
+      e.preventDefault();
+      const top = el.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
