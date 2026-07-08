@@ -313,45 +313,79 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 .cta p { font-size: 17px; color: rgba(247, 241, 230, 0.7); max-width: 540px; margin: 0 auto 40px; line-height: 1.8; }
 .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
-/* ===== Route (永庆坊探索路线) ===== */
+/* ===== Route Map (永庆坊探索路线) ===== */
 .route { background: var(--paper); position: relative; }
-.route-intro { display: flex; align-items: flex-start; gap: 32px; margin-bottom: 48px; }
-.route-badge {
-  flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%;
-  background: var(--crimson); color: var(--paper);
+.route-map-wrap {
+  margin-top: 56px; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(26, 22, 20, 0.1);
+  border: 1px solid var(--paper-deep);
+  background: #EDE4D0;
+  position: relative;
+}
+.route-map { width: 100%; height: auto; display: block; }
+.route-map .map-street { stroke: rgba(26, 22, 20, 0.05); fill: none; }
+.route-map .map-label { font-size: 11px; fill: rgba(26, 22, 20, 0.22); font-family: "Noto Sans SC", sans-serif; }
+.route-map .map-park { fill: rgba(58, 107, 90, 0.07); }
+.route-path {
+  fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round;
+  filter: drop-shadow(0 3px 6px rgba(155, 27, 27, 0.15));
+}
+.route-path.anim {
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: drawPath 2.5s var(--ease) forwards;
+}
+@keyframes drawPath { to { stroke-dashoffset: 0; } }
+.route-marker { cursor: pointer; }
+.route-marker circle.bg { transition: all 0.3s var(--ease); }
+.route-marker:hover circle.bg { r: 24; }
+.route-marker.active circle.bg { r: 26; filter: drop-shadow(0 0 10px rgba(201, 154, 62, 0.5)); }
+.route-marker text { pointer-events: none; font-family: "Noto Serif SC", serif; font-weight: 900; }
+.route-video-btn {
+  position: absolute; top: 16px; right: 16px;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(26, 22, 20, 0.55); backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(247, 241, 230, 0.2);
   display: flex; align-items: center; justify-content: center;
-  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 24px;
-  box-shadow: 0 4px 16px rgba(155, 27, 27, 0.25);
+  color: var(--paper); cursor: pointer; transition: all 0.3s var(--ease);
 }
-.route-list { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
-.route-item {
-  display: flex; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--paper-deep);
-  position: relative; transition: padding-left 0.4s var(--ease);
+.route-video-btn:hover { background: var(--crimson); border-color: var(--crimson); }
+.route-legend {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 24px; background: var(--paper-dark);
+  font-size: 12px; color: var(--ink-soft);
 }
-.route-item:last-child { border-bottom: none; }
-.route-item:hover { padding-left: 12px; }
-.route-stop {
-  flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%;
-  background: var(--paper-dark); border: 2px solid var(--crimson);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 18px; color: var(--crimson);
-  position: relative; transition: all 0.4s var(--ease);
+.route-legend .legend-bar {
+  flex: 1; height: 8px; border-radius: 100px;
+  background: linear-gradient(to right, var(--jade), var(--gold), var(--crimson));
 }
-.route-item:hover .route-stop { background: var(--crimson); color: var(--paper); transform: scale(1.1); }
-.route-stop::after {
-  content: ""; position: absolute; top: 100%; left: 50%; width: 2px; height: 28px;
-  background: repeating-linear-gradient(to bottom, var(--crimson) 0, var(--crimson) 4px, transparent 4px, transparent 8px);
-  transform: translateX(-50%);
+.route-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px;
 }
-.route-item:last-child .route-stop::after { display: none; }
-.route-detail { flex: 1; }
-.route-detail h4 { font-size: 19px; margin-bottom: 6px; color: var(--ink); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.route-detail .route-tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; font-weight: 400; font-family: "Noto Sans SC", sans-serif; letter-spacing: 0.05em; }
+.route-card {
+  padding: 24px; border-radius: 10px; background: var(--white);
+  border: 1px solid var(--paper-deep); cursor: pointer;
+  transition: all 0.35s var(--ease); position: relative;
+}
+.route-card:hover, .route-card.active {
+  border-color: var(--crimson); box-shadow: 0 6px 24px rgba(155, 27, 27, 0.1);
+  transform: translateY(-3px);
+}
+.route-card-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--paper-dark); color: var(--crimson);
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 15px;
+  margin-bottom: 14px; transition: all 0.3s var(--ease);
+}
+.route-card:hover .route-card-num, .route-card.active .route-card-num {
+  background: var(--crimson); color: var(--paper);
+}
+.route-card h4 { font-size: 17px; margin-bottom: 8px; color: var(--ink); }
+.route-card .route-tag { font-size: 10px; padding: 2px 8px; border-radius: 100px; font-weight: 400; font-family: "Noto Sans SC", sans-serif; letter-spacing: 0.05em; margin-right: 4px; }
 .route-tag.heritage { background: rgba(155, 27, 27, 0.1); color: var(--crimson); }
 .route-tag.level { background: rgba(201, 154, 62, 0.15); color: var(--gold); }
-.route-detail p { font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
-.route-detail .route-meta { display: flex; gap: 20px; margin-top: 10px; font-size: 13px; color: var(--muted); }
-.route-detail .route-meta span { display: flex; align-items: center; gap: 5px; }
+.route-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; margin-top: 8px; }
+.route-card .route-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 12px; color: var(--ink-soft); }
 .route-summary {
   margin-top: 32px; padding: 32px; background: var(--paper-dark); border-radius: 10px;
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center;
@@ -389,6 +423,7 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
   .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
   .route-summary { grid-template-columns: 1fr 1fr; }
+  .route-cards { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {
   .flow-track { grid-template-columns: 1fr; }
@@ -645,88 +680,144 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
   </div>
 </section>
 
-<!-- ===== Route: 永庆坊非遗探索路线 ===== -->
+<!-- ===== Route: 永庆坊非遗探索路线（地图式） ===== -->
 <section class="section route" id="route">
   <div class="container">
     <div class="reveal">
       <div class="eyebrow">研学路线</div>
       <h2 class="section-title">荔湾永庆坊·非遗探索路线</h2>
-      <p class="section-sub">永庆坊位于广州荔湾区恩宁路历史文化街区，是岭南非遗文化的活态博物馆。沿青石板路漫步，一站式体验广彩、广绣、醒狮、粤剧等非遗精粹，完成线下闯关打卡。</p>
+      <p class="section-sub">永庆坊位于广州荔湾区恩宁路历史文化街区，是岭南非遗文化的活态博物馆。沿青石板路漫步，一站式体验广彩、广绣、醒狮、粤剧等非遗精粹，完成线下闯关打卡。点击地图标记查看各站点详情。</p>
     </div>
-    <div class="route-list">
-      <div class="route-item reveal reveal-delay-1">
-        <div class="route-stop">一</div>
-        <div class="route-detail">
-          <h4>粤剧艺术博物馆 <span class="route-tag heritage">世界级非遗</span> <span class="route-tag level">入门关卡</span></h4>
-          <p>岭南园林式博物馆，展示粤剧戏服、头饰、乐器与经典剧目。可体验粤剧脸谱绘制，感受"南国红豆"的独特魅力。</p>
-          <div class="route-meta">
-            <span>📍 恩宁路127号</span>
-            <span>⏱ 约45分钟</span>
-            <span>🎯 可解锁：粤剧脸谱勋章</span>
-          </div>
-        </div>
+
+    <div class="route-map-wrap reveal reveal-delay-1">
+      <svg class="route-map" viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#3A6B5A"/>
+            <stop offset="45%" stop-color="#C99A3E"/>
+            <stop offset="100%" stop-color="#9B1B1B"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Map background -->
+        <rect width="900" height="460" fill="#EDE4D0"/>
+
+        <!-- Streets -->
+        <path class="map-street" d="M 0 160 L 900 140" stroke-width="22"/>
+        <path class="map-street" d="M 0 310 L 900 290" stroke-width="16"/>
+        <path class="map-street" d="M 230 0 L 250 460" stroke-width="14"/>
+        <path class="map-street" d="M 570 0 L 590 460" stroke-width="14"/>
+
+        <!-- Park area -->
+        <rect class="map-park" x="430" y="200" width="100" height="70" rx="8"/>
+        <text class="map-label" x="480" y="240" text-anchor="middle">永庆坊公园</text>
+
+        <!-- Water -->
+        <rect x="840" y="380" width="60" height="40" rx="6" fill="rgba(44,74,107,0.06)"/>
+
+        <!-- Street labels -->
+        <text class="map-label" x="40" y="152">恩宁路</text>
+        <text class="map-label" x="620" y="302">永庆大街</text>
+        <text class="map-label" x="255" y="20">恩宁路</text>
+        <text class="map-label" x="595" y="20">永庆一巷</text>
+
+        <!-- Route path -->
+        <path class="route-path anim" pathLength="1" d="M 90 110 C 150 175, 210 195, 260 200 C 310 175, 360 145, 400 130 C 450 185, 500 235, 540 260 C 600 225, 650 195, 690 180 C 750 245, 790 315, 820 350" stroke="url(#routeGrad)"/>
+
+        <!-- Stop 1: Start -->
+        <g class="route-marker route-start" data-stop="0" onclick="selectRouteStop(0)">
+          <circle class="bg" cx="90" cy="110" r="20" fill="#3A6B5A"/>
+          <text x="90" y="116" text-anchor="middle" font-size="15" fill="#fff">起</text>
+        </g>
+
+        <!-- Stop 2 -->
+        <g class="route-marker" data-stop="1" onclick="selectRouteStop(1)">
+          <circle class="bg" cx="260" cy="200" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
+          <text x="260" y="206" text-anchor="middle" font-size="15" fill="#C99A3E">2</text>
+        </g>
+
+        <!-- Stop 3 -->
+        <g class="route-marker" data-stop="2" onclick="selectRouteStop(2)">
+          <circle class="bg" cx="400" cy="130" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
+          <text x="400" y="136" text-anchor="middle" font-size="15" fill="#C99A3E">3</text>
+        </g>
+
+        <!-- Stop 4 -->
+        <g class="route-marker" data-stop="3" onclick="selectRouteStop(3)">
+          <circle class="bg" cx="540" cy="260" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
+          <text x="540" y="266" text-anchor="middle" font-size="15" fill="#C99A3E">4</text>
+        </g>
+
+        <!-- Stop 5 -->
+        <g class="route-marker" data-stop="4" onclick="selectRouteStop(4)">
+          <circle class="bg" cx="690" cy="180" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
+          <text x="690" y="186" text-anchor="middle" font-size="15" fill="#C99A3E">5</text>
+        </g>
+
+        <!-- Stop 6: End -->
+        <g class="route-marker route-end" data-stop="5" onclick="selectRouteStop(5)">
+          <circle class="bg" cx="820" cy="350" r="20" fill="#9B1B1B" stroke="#fff" stroke-width="3"/>
+          <text x="820" y="356" text-anchor="middle" font-size="15" fill="#fff">终</text>
+        </g>
+      </svg>
+
+      <div class="route-video-btn" onclick="alert('全景漫游即将上线，敬请期待！')" title="全景漫游">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       </div>
-      <div class="route-item reveal reveal-delay-1">
-        <div class="route-stop">二</div>
-        <div class="route-detail">
-          <h4>广彩工作室 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">进阶关卡</span></h4>
-          <p>走进广彩匠人的工作台，观看织金彩瓷的手绘全过程。亲手在瓷盘上描金勾线，完成属于自己的广彩小品，拍照上传即可由 AI 评分核验。</p>
-          <div class="route-meta">
-            <span>📍 永庆大街22号</span>
-            <span>⏱ 约60分钟</span>
-            <span>🎯 可解锁：广彩描金勋章</span>
-          </div>
-        </div>
-      </div>
-      <div class="route-item reveal reveal-delay-2">
-        <div class="route-stop">三</div>
-        <div class="route-detail">
-          <h4>醒狮体验馆 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">进阶关卡</span></h4>
-          <p>南狮发源地之一，可近距离接触扎作狮头工艺，学习基本步法与鼓乐配合。举起狮头完成一组"采青"动作，感受醒狮精神。</p>
-          <div class="route-meta">
-            <span>📍 恩宁路永庆二巷</span>
-            <span>⏱ 约50分钟</span>
-            <span>🎯 可解锁：醒狮采青勋章</span>
-          </div>
-        </div>
-      </div>
-      <div class="route-item reveal reveal-delay-2">
-        <div class="route-stop">四</div>
-        <div class="route-detail">
-          <h4>广绣传习所 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">高级关卡</span></h4>
-          <p>广绣以色彩绚丽、构图饱满著称。在传承人指导下体验基本针法，绣制一朵岭南木棉花，完成从穿针到落棚的完整流程。</p>
-          <div class="route-meta">
-            <span>📍 永庆一巷10号</span>
-            <span>⏱ 约70分钟</span>
-            <span>🎯 可解锁：广绣木棉勋章</span>
-          </div>
-        </div>
-      </div>
-      <div class="route-item reveal reveal-delay-3">
-        <div class="route-stop">五</div>
-        <div class="route-detail">
-          <h4>牙雕·木雕工坊 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">高级关卡</span></h4>
-          <p>岭南三雕两塑的精华所在，观摩鬼斧神工的象牙球层层镂刻技艺，体验木雕基础打磨，理解"慢工出细活"的匠人精神。</p>
-          <div class="route-meta">
-            <span>📍 恩宁路73号</span>
-            <span>⏱ 约55分钟</span>
-            <span>🎯 可解锁：雕镂匠心勋章</span>
-          </div>
-        </div>
-      </div>
-      <div class="route-item reveal reveal-delay-3">
-        <div class="route-stop">六</div>
-        <div class="route-detail">
-          <h4>铜器老字号 <span class="route-tag heritage">市级非遗</span> <span class="route-tag level">隐藏关卡</span></h4>
-          <p>恩宁路"打铜街"百年传承的手工打铜技艺，听老匠人讲述一锤一打间的温度与节奏，亲手敲制一枚铜牌书签作为研学纪念。</p>
-          <div class="route-meta">
-            <span>📍 恩宁路57号</span>
-            <span>⏱ 约40分钟</span>
-            <span>🎯 可解锁：铜匠手作勋章</span>
-          </div>
-        </div>
+
+      <div class="route-legend">
+        <span>起点</span>
+        <div class="legend-bar"></div>
+        <span>终点</span>
       </div>
     </div>
+
+    <!-- Stop detail cards -->
+    <div class="route-cards">
+      <div class="route-card reveal reveal-delay-1" data-stop="0" onclick="selectRouteStop(0)">
+        <div class="route-card-num">1</div>
+        <h4>粤剧艺术博物馆</h4>
+        <div><span class="route-tag heritage">世界级非遗</span><span class="route-tag level">入门关卡</span></div>
+        <p>岭南园林式博物馆，展示粤剧戏服、头饰、乐器与经典剧目。可体验粤剧脸谱绘制，感受"南国红豆"的独特魅力。</p>
+        <div class="route-meta"><span>📍 恩宁路127号</span><span>⏱ 约45分钟</span><span>🎯 粤剧脸谱勋章</span></div>
+      </div>
+      <div class="route-card reveal reveal-delay-1" data-stop="1" onclick="selectRouteStop(1)">
+        <div class="route-card-num">2</div>
+        <h4>广彩工作室</h4>
+        <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
+        <p>走进广彩匠人的工作台，观看织金彩瓷的手绘全过程。亲手在瓷盘上描金勾线，完成属于自己的广彩小品。</p>
+        <div class="route-meta"><span>📍 永庆大街22号</span><span>⏱ 约60分钟</span><span>🎯 广彩描金勋章</span></div>
+      </div>
+      <div class="route-card reveal reveal-delay-2" data-stop="2" onclick="selectRouteStop(2)">
+        <div class="route-card-num">3</div>
+        <h4>醒狮体验馆</h4>
+        <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
+        <p>南狮发源地之一，近距离接触扎作狮头工艺，学习基本步法与鼓乐配合。举起狮头完成一组"采青"动作。</p>
+        <div class="route-meta"><span>📍 恩宁路永庆二巷</span><span>⏱ 约50分钟</span><span>🎯 醒狮采青勋章</span></div>
+      </div>
+      <div class="route-card reveal reveal-delay-2" data-stop="3" onclick="selectRouteStop(3)">
+        <div class="route-card-num">4</div>
+        <h4>广绣传习所</h4>
+        <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">高级关卡</span></div>
+        <p>广绣以色彩绚丽、构图饱满著称。在传承人指导下体验基本针法，绣制一朵岭南木棉花。</p>
+        <div class="route-meta"><span>📍 永庆一巷10号</span><span>⏱ 约70分钟</span><span>🎯 广绣木棉勋章</span></div>
+      </div>
+      <div class="route-card reveal reveal-delay-3" data-stop="4" onclick="selectRouteStop(4)">
+        <div class="route-card-num">5</div>
+        <h4>牙雕·木雕工坊</h4>
+        <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">高级关卡</span></div>
+        <p>岭南三雕两塑的精华所在，观摩象牙球层层镂刻技艺，体验木雕基础打磨，理解匠人精神。</p>
+        <div class="route-meta"><span>📍 恩宁路73号</span><span>⏱ 约55分钟</span><span>🎯 雕镂匠心勋章</span></div>
+      </div>
+      <div class="route-card reveal reveal-delay-3" data-stop="5" onclick="selectRouteStop(5)">
+        <div class="route-card-num">6</div>
+        <h4>铜器老字号</h4>
+        <div><span class="route-tag heritage">市级非遗</span><span class="route-tag level">隐藏关卡</span></div>
+        <p>恩宁路"打铜街"百年传承的手工打铜技艺，听老匠人讲述一锤一打间的温度与节奏，亲手敲制铜牌书签。</p>
+        <div class="route-meta"><span>📍 恩宁路57号</span><span>⏱ 约40分钟</span><span>🎯 铜匠手作勋章</span></div>
+      </div>
+    </div>
+
     <div class="route-summary reveal reveal-delay-4">
       <div class="route-stat"><strong>6</strong><span>非遗打卡站点</span></div>
       <div class="route-stat"><strong>5+</strong><span>国家级非遗项目</span></div>
@@ -881,6 +972,12 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Route map interactivity
+function selectRouteStop(idx) {
+  document.querySelectorAll('.route-marker').forEach(m => m.classList.toggle('active', m.dataset.stop == idx));
+  document.querySelectorAll('.route-card').forEach(c => c.classList.toggle('active', c.dataset.stop == idx));
+}
 
 // Smooth anchor offset
 document.querySelectorAll('a[href^="#"]').forEach(a => {
