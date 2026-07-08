@@ -313,6 +313,52 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 .cta p { font-size: 17px; color: rgba(247, 241, 230, 0.7); max-width: 540px; margin: 0 auto 40px; line-height: 1.8; }
 .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
+/* ===== Route (永庆坊探索路线) ===== */
+.route { background: var(--paper); position: relative; }
+.route-intro { display: flex; align-items: flex-start; gap: 32px; margin-bottom: 48px; }
+.route-badge {
+  flex-shrink: 0; width: 64px; height: 64px; border-radius: 50%;
+  background: var(--crimson); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 24px;
+  box-shadow: 0 4px 16px rgba(155, 27, 27, 0.25);
+}
+.route-list { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+.route-item {
+  display: flex; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--paper-deep);
+  position: relative; transition: padding-left 0.4s var(--ease);
+}
+.route-item:last-child { border-bottom: none; }
+.route-item:hover { padding-left: 12px; }
+.route-stop {
+  flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%;
+  background: var(--paper-dark); border: 2px solid var(--crimson);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 18px; color: var(--crimson);
+  position: relative; transition: all 0.4s var(--ease);
+}
+.route-item:hover .route-stop { background: var(--crimson); color: var(--paper); transform: scale(1.1); }
+.route-stop::after {
+  content: ""; position: absolute; top: 100%; left: 50%; width: 2px; height: 28px;
+  background: repeating-linear-gradient(to bottom, var(--crimson) 0, var(--crimson) 4px, transparent 4px, transparent 8px);
+  transform: translateX(-50%);
+}
+.route-item:last-child .route-stop::after { display: none; }
+.route-detail { flex: 1; }
+.route-detail h4 { font-size: 19px; margin-bottom: 6px; color: var(--ink); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.route-detail .route-tag { font-size: 11px; padding: 3px 10px; border-radius: 100px; font-weight: 400; font-family: "Noto Sans SC", sans-serif; letter-spacing: 0.05em; }
+.route-tag.heritage { background: rgba(155, 27, 27, 0.1); color: var(--crimson); }
+.route-tag.level { background: rgba(201, 154, 62, 0.15); color: var(--gold); }
+.route-detail p { font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
+.route-detail .route-meta { display: flex; gap: 20px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+.route-detail .route-meta span { display: flex; align-items: center; gap: 5px; }
+.route-summary {
+  margin-top: 32px; padding: 32px; background: var(--paper-dark); border-radius: 10px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center;
+}
+.route-stat strong { display: block; font-family: "Noto Serif SC", serif; font-size: 32px; font-weight: 900; color: var(--crimson); margin-bottom: 4px; }
+.route-stat span { font-size: 13px; color: var(--ink-soft); }
+
 /* ===== Footer ===== */
 .footer { background: var(--ink); color: rgba(247, 241, 230, 0.5); padding: 64px 0 32px; }
 .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(247, 241, 230, 0.08); }
@@ -342,6 +388,7 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
   .users-grid { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .route-summary { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 520px) {
   .flow-track { grid-template-columns: 1fr; }
@@ -363,6 +410,7 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
     <div class="nav-links" id="navLinks">
       <a href="#features">核心功能</a>
       <a href="#heritage">非遗项目</a>
+      <a href="#route">研学路线</a>
       <a href="#flow">闯关流程</a>
       <a href="#value">价值意义</a>
       <a href="#cta" class="nav-cta">开启研学</a>
@@ -593,6 +641,97 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <p>自动归档，一键导出成长档案</p>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Route: 永庆坊非遗探索路线 ===== -->
+<section class="section route" id="route">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">研学路线</div>
+      <h2 class="section-title">荔湾永庆坊·非遗探索路线</h2>
+      <p class="section-sub">永庆坊位于广州荔湾区恩宁路历史文化街区，是岭南非遗文化的活态博物馆。沿青石板路漫步，一站式体验广彩、广绣、醒狮、粤剧等非遗精粹，完成线下闯关打卡。</p>
+    </div>
+    <div class="route-list">
+      <div class="route-item reveal reveal-delay-1">
+        <div class="route-stop">一</div>
+        <div class="route-detail">
+          <h4>粤剧艺术博物馆 <span class="route-tag heritage">世界级非遗</span> <span class="route-tag level">入门关卡</span></h4>
+          <p>岭南园林式博物馆，展示粤剧戏服、头饰、乐器与经典剧目。可体验粤剧脸谱绘制，感受"南国红豆"的独特魅力。</p>
+          <div class="route-meta">
+            <span>📍 恩宁路127号</span>
+            <span>⏱ 约45分钟</span>
+            <span>🎯 可解锁：粤剧脸谱勋章</span>
+          </div>
+        </div>
+      </div>
+      <div class="route-item reveal reveal-delay-1">
+        <div class="route-stop">二</div>
+        <div class="route-detail">
+          <h4>广彩工作室 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">进阶关卡</span></h4>
+          <p>走进广彩匠人的工作台，观看织金彩瓷的手绘全过程。亲手在瓷盘上描金勾线，完成属于自己的广彩小品，拍照上传即可由 AI 评分核验。</p>
+          <div class="route-meta">
+            <span>📍 永庆大街22号</span>
+            <span>⏱ 约60分钟</span>
+            <span>🎯 可解锁：广彩描金勋章</span>
+          </div>
+        </div>
+      </div>
+      <div class="route-item reveal reveal-delay-2">
+        <div class="route-stop">三</div>
+        <div class="route-detail">
+          <h4>醒狮体验馆 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">进阶关卡</span></h4>
+          <p>南狮发源地之一，可近距离接触扎作狮头工艺，学习基本步法与鼓乐配合。举起狮头完成一组"采青"动作，感受醒狮精神。</p>
+          <div class="route-meta">
+            <span>📍 恩宁路永庆二巷</span>
+            <span>⏱ 约50分钟</span>
+            <span>🎯 可解锁：醒狮采青勋章</span>
+          </div>
+        </div>
+      </div>
+      <div class="route-item reveal reveal-delay-2">
+        <div class="route-stop">四</div>
+        <div class="route-detail">
+          <h4>广绣传习所 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">高级关卡</span></h4>
+          <p>广绣以色彩绚丽、构图饱满著称。在传承人指导下体验基本针法，绣制一朵岭南木棉花，完成从穿针到落棚的完整流程。</p>
+          <div class="route-meta">
+            <span>📍 永庆一巷10号</span>
+            <span>⏱ 约70分钟</span>
+            <span>🎯 可解锁：广绣木棉勋章</span>
+          </div>
+        </div>
+      </div>
+      <div class="route-item reveal reveal-delay-3">
+        <div class="route-stop">五</div>
+        <div class="route-detail">
+          <h4>牙雕·木雕工坊 <span class="route-tag heritage">国家级非遗</span> <span class="route-tag level">高级关卡</span></h4>
+          <p>岭南三雕两塑的精华所在，观摩鬼斧神工的象牙球层层镂刻技艺，体验木雕基础打磨，理解"慢工出细活"的匠人精神。</p>
+          <div class="route-meta">
+            <span>📍 恩宁路73号</span>
+            <span>⏱ 约55分钟</span>
+            <span>🎯 可解锁：雕镂匠心勋章</span>
+          </div>
+        </div>
+      </div>
+      <div class="route-item reveal reveal-delay-3">
+        <div class="route-stop">六</div>
+        <div class="route-detail">
+          <h4>铜器老字号 <span class="route-tag heritage">市级非遗</span> <span class="route-tag level">隐藏关卡</span></h4>
+          <p>恩宁路"打铜街"百年传承的手工打铜技艺，听老匠人讲述一锤一打间的温度与节奏，亲手敲制一枚铜牌书签作为研学纪念。</p>
+          <div class="route-meta">
+            <span>📍 恩宁路57号</span>
+            <span>⏱ 约40分钟</span>
+            <span>🎯 可解锁：铜匠手作勋章</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="route-summary reveal reveal-delay-4">
+      <div class="route-stat"><strong>6</strong><span>非遗打卡站点</span></div>
+      <div class="route-stat"><strong>5+</strong><span>国家级非遗项目</span></div>
+      <div class="route-stat"><strong>~5h</strong><span>建议探索时长</span></div>
+      <div class="route-stat"><strong>6</strong><span>专属勋章可解锁</span></div>
     </div>
   </div>
 </section>
