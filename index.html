@@ -313,123 +313,25 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 .cta p { font-size: 17px; color: rgba(247, 241, 230, 0.7); max-width: 540px; margin: 0 auto 40px; line-height: 1.8; }
 .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
 
-/* ===== Route Map (永庆坊探索路线) ===== */
-.route { background: var(--paper); position: relative; }
-.route-map-wrap {
-  margin-top: 56px; border-radius: 14px; overflow: hidden;
-  box-shadow: 0 8px 40px rgba(26, 22, 20, 0.1);
-  border: 1px solid var(--paper-deep);
-  background: #EDE4D0;
-  position: relative;
+/* ===== Route Teaser ===== */
+.route-teaser { background: var(--paper); }
+.teaser-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 48px; }
+.teaser-card {
+  display: block; border-radius: 14px; overflow: hidden;
+  background: var(--white); border: 1px solid var(--paper-deep);
+  text-decoration: none; color: inherit;
+  transition: all 0.4s var(--ease);
 }
-.route-map { width: 100%; height: auto; display: block; }
-.route-map .map-street { stroke: rgba(26, 22, 20, 0.05); fill: none; }
-.route-map .map-label { font-size: 11px; fill: rgba(26, 22, 20, 0.22); font-family: "Noto Sans SC", sans-serif; }
-.route-map .map-park { fill: rgba(58, 107, 90, 0.07); }
-.route-path {
-  fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round;
-  filter: drop-shadow(0 3px 6px rgba(155, 27, 27, 0.15));
-}
-.route-path.anim {
-  stroke-dasharray: 1; stroke-dashoffset: 1;
-  animation: drawPath 2.5s var(--ease) forwards;
-}
-@keyframes drawPath { to { stroke-dashoffset: 0; } }
-.route-marker { cursor: pointer; }
-.route-marker circle.bg { transition: all 0.3s var(--ease); }
-.route-marker:hover circle.bg { r: 24; }
-.route-marker.active circle.bg { r: 26; filter: drop-shadow(0 0 10px rgba(201, 154, 62, 0.5)); }
-.route-marker text { pointer-events: none; font-family: "Noto Serif SC", serif; font-weight: 900; }
-.route-video-btn {
-  position: absolute; top: 16px; right: 16px;
-  width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(26, 22, 20, 0.55); backdrop-filter: blur(6px);
-  border: 1.5px solid rgba(247, 241, 230, 0.2);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--paper); cursor: pointer; transition: all 0.3s var(--ease);
-}
-.route-video-btn:hover { background: var(--crimson); border-color: var(--crimson); }
-.route-legend {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 24px; background: var(--paper-dark);
-  font-size: 12px; color: var(--ink-soft);
-}
-.route-legend .legend-bar {
-  flex: 1; height: 8px; border-radius: 100px;
-  background: linear-gradient(to right, var(--jade), var(--gold), var(--crimson));
-}
-.route-cards {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 32px;
-}
-.route-card {
-  padding: 24px; border-radius: 10px; background: var(--white);
-  border: 1px solid var(--paper-deep); cursor: pointer;
-  transition: all 0.35s var(--ease); position: relative;
-}
-.route-card:hover, .route-card.active {
-  border-color: var(--crimson); box-shadow: 0 6px 24px rgba(155, 27, 27, 0.1);
-  transform: translateY(-3px);
-}
-.route-card-num {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--paper-dark); color: var(--crimson);
-  display: flex; align-items: center; justify-content: center;
-  font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 15px;
-  margin-bottom: 14px; transition: all 0.3s var(--ease);
-}
-.route-card:hover .route-card-num, .route-card.active .route-card-num {
-  background: var(--crimson); color: var(--paper);
-}
-.route-card h4 { font-size: 17px; margin-bottom: 8px; color: var(--ink); }
-.route-card .route-tag { font-size: 10px; padding: 2px 8px; border-radius: 100px; font-weight: 400; font-family: "Noto Sans SC", sans-serif; letter-spacing: 0.05em; margin-right: 4px; }
-.route-tag.heritage { background: rgba(155, 27, 27, 0.1); color: var(--crimson); }
-.route-tag.level { background: rgba(201, 154, 62, 0.15); color: var(--gold); }
-.route-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.7; margin-top: 8px; }
-.route-card .route-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; font-size: 12px; color: var(--ink-soft); }
-.route-summary {
-  margin-top: 32px; padding: 32px; background: var(--paper-dark); border-radius: 10px;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; text-align: center;
-}
-.route-stat strong { display: block; font-family: "Noto Serif SC", serif; font-size: 32px; font-weight: 900; color: var(--crimson); margin-bottom: 4px; }
-.route-stat span { font-size: 13px; color: var(--ink-soft); }
-
-/* ===== Route Popup ===== */
-.route-popup {
-  position: absolute; display: none; width: 220px;
-  background: var(--white); border-radius: 10px;
-  box-shadow: 0 8px 32px rgba(26,22,20,0.25);
-  overflow: hidden; z-index: 20;
-  transition: opacity 0.3s var(--ease);
-}
-.route-popup.show { display: block; }
-.route-popup img { width: 100%; height: 130px; object-fit: cover; }
-.route-popup-body { padding: 10px 14px 12px; }
-.route-popup-body h5 { font-size: 15px; color: var(--ink); margin-bottom: 2px; }
-.route-popup-body span { font-size: 11px; color: var(--ink-soft); }
-.route-popup-close {
-  position: absolute; top: 6px; right: 6px; width: 24px; height: 24px;
-  border-radius: 50%; background: rgba(26,22,20,0.5); color: #fff;
-  border: none; cursor: pointer; font-size: 14px; line-height: 1;
-  display: flex; align-items: center; justify-content: center;
-}
-
-/* ===== Route Locked State ===== */
-.route-locked .route-content { filter: blur(6px); pointer-events: none; user-select: none; }
-.route-unlock-overlay {
-  position: absolute; inset: 0; z-index: 10;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 20px; background: rgba(247,241,230,0.82); border-radius: 14px;
-}
-.route-unlock-overlay .unlock-icon {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: var(--crimson); color: var(--paper);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 20px rgba(155,27,27,0.3);
-}
-.route-unlock-overlay h3 { font-size: 24px; color: var(--ink); }
-.route-unlock-overlay p { font-size: 14px; color: var(--ink-soft); text-align: center; max-width: 360px; }
-.route-unlock-overlay .btn-primary { margin-top: 4px; }
-.route-content { position: relative; transition: filter 0.5s var(--ease); }
+.teaser-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(26,22,20,0.12); border-color: var(--crimson); }
+.teaser-img { width: 100%; height: 200px; background-size: cover; background-position: center; transition: transform 0.6s var(--ease); }
+.teaser-card:hover .teaser-img { transform: scale(1.05); }
+.teaser-body { padding: 28px; }
+.teaser-body h3 { font-size: 20px; color: var(--ink); margin-bottom: 10px; font-family: "Noto Serif SC", serif; }
+.teaser-body p { font-size: 14px; color: var(--ink-soft); line-height: 1.8; }
+.teaser-stats { display: flex; gap: 20px; margin: 16px 0; }
+.teaser-stats span { font-size: 13px; color: var(--ink-soft); }
+.teaser-stats strong { font-family: "Noto Serif SC", serif; font-size: 20px; color: var(--crimson); margin-right: 4px; }
+.teaser-btn { display: inline-block; font-size: 14px; color: var(--crimson); font-weight: 500; }
 
 /* ===== Footer ===== */
 .footer { background: var(--ink); color: rgba(247, 241, 230, 0.5); padding: 64px 0 32px; }
@@ -460,15 +362,13 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
   .users-grid { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
   .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-  .route-summary { grid-template-columns: 1fr 1fr; }
-  .route-cards { grid-template-columns: 1fr 1fr; }
+  .teaser-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 520px) {
   .flow-track { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; }
   .hero-actions { flex-direction: column; }
   .btn-primary, .btn-ghost { justify-content: center; }
-  .route-cards { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -486,7 +386,7 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
       <a href="#heritage">非遗项目</a>
       <a href="#flow">闯关流程</a>
       <a href="#value">价值意义</a>
-      <a href="#route" class="nav-cta" onclick="startRoute();return false;">开启研学</a>
+      <a href="route.html" class="nav-cta">开启研学</a>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="菜单">
       <span></span><span></span><span></span>
@@ -510,7 +410,7 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
         <p class="hero-tagline">游戏化非遗研学成长平台</p>
         <p class="hero-desc">以游戏化闯关为核心，依托AI技术实现非遗作品智能核验、积分勋章解锁、个人成长档案生成——让非遗学习可记录、可积累、可沉淀。</p>
         <div class="hero-actions">
-          <a href="#route" class="btn-primary" onclick="startRoute();return false;">
+          <a href="route.html" class="btn-primary">
             开启研学之旅
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
@@ -718,177 +618,41 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
   </div>
 </section>
 
-<!-- ===== Route: 永庆坊非遗探索路线（地图式·锁定后解锁） ===== -->
-<section class="section route route-locked" id="route">
+<!-- ===== Route Teaser ===== -->
+<section class="section route-teaser" id="route">
   <div class="container">
     <div class="reveal">
       <div class="eyebrow">研学路线</div>
-      <h2 class="section-title">荔湾永庆坊·非遗探索路线</h2>
-      <p class="section-sub">永庆坊位于广州荔湾区恩宁路历史文化街区，是岭南非遗文化的活态博物馆。沿青石板路漫步，一站式体验广彩、广绣、醒狮、粤剧等非遗精粹，完成线下闯关打卡。点击地图标记查看各站点详情。</p>
+      <h2 class="section-title">两条非遗探索路线，等你出发</h2>
+      <p class="section-sub">精选广州最具代表性的非遗历史文化街区，以运动轨迹地图形式呈现打卡路线。点击开启研学，选择你的探索路线。</p>
     </div>
-
-    <div class="route-content reveal reveal-delay-1">
-      <!-- Locked overlay -->
-      <div class="route-unlock-overlay" id="routeUnlock">
-        <div class="unlock-icon">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        </div>
-        <h3>开启研学，解锁探索路线</h3>
-        <p>完成解锁后，即可查看 8 个非遗打卡站点的地图路线与详情。</p>
-        <button class="btn-primary" onclick="startRoute()">
-          开启研学之旅
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-
-      <div class="route-map-wrap">
-        <svg class="route-map" viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#3A6B5A"/>
-              <stop offset="45%" stop-color="#C99A3E"/>
-              <stop offset="100%" stop-color="#9B1B1B"/>
-            </linearGradient>
-          </defs>
-
-          <rect width="900" height="460" fill="#EDE4D0"/>
-          <path class="map-street" d="M 0 160 L 900 140" stroke-width="22"/>
-          <path class="map-street" d="M 0 310 L 900 290" stroke-width="16"/>
-          <path class="map-street" d="M 230 0 L 250 460" stroke-width="14"/>
-          <path class="map-street" d="M 570 0 L 590 460" stroke-width="14"/>
-          <rect class="map-park" x="430" y="200" width="100" height="70" rx="8"/>
-          <text class="map-label" x="480" y="240" text-anchor="middle">永庆坊公园</text>
-          <rect x="840" y="380" width="60" height="40" rx="6" fill="rgba(44,74,107,0.06)"/>
-          <text class="map-label" x="40" y="152">恩宁路</text>
-          <text class="map-label" x="620" y="302">永庆大街</text>
-          <text class="map-label" x="255" y="20">恩宁路</text>
-          <text class="map-label" x="595" y="20">永庆一巷</text>
-
-          <!-- Route path through 8 stops -->
-          <path class="route-path anim" pathLength="1" d="M 90 110 C 140 170, 180 195, 220 200 C 270 180, 310 150, 350 130 C 400 180, 440 220, 480 250 C 530 220, 570 190, 600 170 C 640 220, 680 260, 700 280 C 730 250, 760 220, 780 200 C 800 250, 820 310, 830 360" stroke="url(#routeGrad)"/>
-
-          <!-- 8 markers -->
-          <g class="route-marker route-start" data-stop="0" onclick="selectRouteStop(0)">
-            <circle class="bg" cx="90" cy="110" r="20" fill="#3A6B5A"/>
-            <text x="90" y="116" text-anchor="middle" font-size="15" fill="#fff">起</text>
-          </g>
-          <g class="route-marker" data-stop="1" onclick="selectRouteStop(1)">
-            <circle class="bg" cx="220" cy="200" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
-            <text x="220" y="206" text-anchor="middle" font-size="15" fill="#C99A3E">2</text>
-          </g>
-          <g class="route-marker" data-stop="2" onclick="selectRouteStop(2)">
-            <circle class="bg" cx="350" cy="130" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
-            <text x="350" y="136" text-anchor="middle" font-size="15" fill="#C99A3E">3</text>
-          </g>
-          <g class="route-marker" data-stop="3" onclick="selectRouteStop(3)">
-            <circle class="bg" cx="480" cy="250" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
-            <text x="480" y="256" text-anchor="middle" font-size="15" fill="#C99A3E">4</text>
-          </g>
-          <g class="route-marker" data-stop="4" onclick="selectRouteStop(4)">
-            <circle class="bg" cx="600" cy="170" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
-            <text x="600" y="176" text-anchor="middle" font-size="15" fill="#C99A3E">5</text>
-          </g>
-          <g class="route-marker" data-stop="5" onclick="selectRouteStop(5)">
-            <circle class="bg" cx="700" cy="280" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
-            <text x="700" y="286" text-anchor="middle" font-size="15" fill="#C99A3E">6</text>
-          </g>
-          <g class="route-marker" data-stop="6" onclick="selectRouteStop(6)">
-            <circle class="bg" cx="780" cy="200" r="18" fill="#fff" stroke="#C99A3E" stroke-width="2.5"/>
-            <text x="780" y="206" text-anchor="middle" font-size="15" fill="#C99A3E">7</text>
-          </g>
-          <g class="route-marker route-end" data-stop="7" onclick="selectRouteStop(7)">
-            <circle class="bg" cx="830" cy="360" r="20" fill="#9B1B1B" stroke="#fff" stroke-width="3"/>
-            <text x="830" y="366" text-anchor="middle" font-size="15" fill="#fff">终</text>
-          </g>
-        </svg>
-
-        <!-- Popup -->
-        <div class="route-popup" id="routePopup">
-          <button class="route-popup-close" onclick="closeRoutePopup()">&times;</button>
-          <img id="routePopupImg" src="" alt="">
-          <div class="route-popup-body">
-            <h5 id="routePopupName"></h5>
-            <span id="routePopupAddr"></span>
+    <div class="teaser-grid">
+      <a href="route.html" class="teaser-card reveal reveal-delay-1">
+        <div class="teaser-img" style="background-image:url('assets/images/hero-lingnan.jpg')"></div>
+        <div class="teaser-body">
+          <h3>荔湾永庆坊·非遗探索路线</h3>
+          <p>恩宁路历史文化街区，8个非遗打卡站点，一站式体验广彩、广绣、醒狮、粤剧等岭南非遗精粹。</p>
+          <div class="teaser-stats">
+            <span><strong>8</strong>站点</span>
+            <span><strong>~7h</strong>时长</span>
+            <span><strong>8</strong>勋章</span>
           </div>
+          <span class="teaser-btn">选择此路线 →</span>
         </div>
-
-        <div class="route-video-btn" onclick="alert('全景漫游即将上线，敬请期待！')" title="全景漫游">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      </a>
+      <a href="route.html" class="teaser-card reveal reveal-delay-2">
+        <div class="teaser-img" style="background-image:url('assets/images/stop-wuxian.jpg')"></div>
+        <div class="teaser-body">
+          <h3>北京路农讲所·非遗探索路线</h3>
+          <p>中山四路至惠福西路，3个非遗打卡站点，体验素馨花文化、广绣海丝、古琴通草画等广府非遗。</p>
+          <div class="teaser-stats">
+            <span><strong>3</strong>站点</span>
+            <span><strong>~4h</strong>时长</span>
+            <span><strong>3</strong>勋章</span>
+          </div>
+          <span class="teaser-btn">选择此路线 →</span>
         </div>
-
-        <div class="route-legend">
-          <span>起点</span>
-          <div class="legend-bar"></div>
-          <span>终点</span>
-        </div>
-      </div>
-
-      <!-- 8 stop detail cards -->
-      <div class="route-cards">
-        <div class="route-card" data-stop="0" onclick="selectRouteStop(0)">
-          <div class="route-card-num">1</div>
-          <h4>粤剧艺术博物馆</h4>
-          <div><span class="route-tag heritage">世界级非遗</span><span class="route-tag level">入门关卡</span></div>
-          <p>岭南园林式博物馆，展示粤剧戏服、头饰、乐器与经典剧目。可体验粤剧脸谱绘制。</p>
-          <div class="route-meta"><span>📍 恩宁路127号</span><span>⏱ 约45分钟</span></div>
-        </div>
-        <div class="route-card" data-stop="1" onclick="selectRouteStop(1)">
-          <div class="route-card-num">2</div>
-          <h4>广彩工作室</h4>
-          <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
-          <p>走进广彩匠人的工作台，观看织金彩瓷的手绘全过程。亲手在瓷盘上描金勾线。</p>
-          <div class="route-meta"><span>📍 永庆大街22号</span><span>⏱ 约60分钟</span></div>
-        </div>
-        <div class="route-card" data-stop="2" onclick="selectRouteStop(2)">
-          <div class="route-card-num">3</div>
-          <h4>醒狮体验馆</h4>
-          <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
-          <p>南狮发源地之一，近距离接触扎作狮头工艺，学习基本步法与鼓乐配合。</p>
-          <div class="route-meta"><span>📍 恩宁路永庆二巷</span><span>⏱ 约50分钟</span></div>
-        </div>
-        <div class="route-card" data-stop="3" onclick="selectRouteStop(3)">
-          <div class="route-card-num">4</div>
-          <h4>广绣传习所</h4>
-          <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">高级关卡</span></div>
-          <p>广绣以色彩绚丽、构图饱满著称。在传承人指导下体验基本针法，绣制岭南木棉花。</p>
-          <div class="route-meta"><span>📍 永庆一巷10号</span><span>⏱ 约70分钟</span></div>
-        </div>
-        <div class="route-card" data-stop="4" onclick="selectRouteStop(4)">
-          <div class="route-card-num">5</div>
-          <h4>牙雕·木雕工坊</h4>
-          <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">高级关卡</span></div>
-          <p>岭南三雕两塑的精华所在，观摩象牙球层层镂刻技艺，体验木雕基础打磨。</p>
-          <div class="route-meta"><span>📍 恩宁路73号</span><span>⏱ 约55分钟</span></div>
-        </div>
-        <div class="route-card" data-stop="5" onclick="selectRouteStop(5)">
-          <div class="route-card-num">6</div>
-          <h4>铜器老字号</h4>
-          <div><span class="route-tag heritage">市级非遗</span><span class="route-tag level">隐藏关卡</span></div>
-          <p>恩宁路"打铜街"百年传承的手工打铜技艺，听老匠人讲述一锤一打间的温度与节奏。</p>
-          <div class="route-meta"><span>📍 恩宁路57号</span><span>⏱ 约40分钟</span></div>
-        </div>
-        <div class="route-card" data-stop="6" onclick="selectRouteStop(6)">
-          <div class="route-card-num">7</div>
-          <h4>活字印刷体验馆</h4>
-          <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
-          <p>毕昇活字印刷术体验，亲手排字、上墨、拓印，感受四大发明之一的智慧。</p>
-          <div class="route-meta"><span>📍 永庆坊二期非遗街区</span><span>⏱ 约45分钟</span></div>
-        </div>
-        <div class="route-card" data-stop="7" onclick="selectRouteStop(7)">
-          <div class="route-card-num">8</div>
-          <h4>永庆坊非遗工作站</h4>
-          <div><span class="route-tag heritage">综合体验</span><span class="route-tag level">终极关卡</span></div>
-          <p>核心综合馆，汇聚多技艺体验。陶瓷拉胚、扎染、剪纸一站式打卡，研学收官之地。</p>
-          <div class="route-meta"><span>📍 永庆大街3号1层</span><span>⏱ 约80分钟</span></div>
-        </div>
-      </div>
-
-      <div class="route-summary">
-        <div class="route-stat"><strong>8</strong><span>非遗打卡站点</span></div>
-        <div class="route-stat"><strong>6+</strong><span>国家级非遗项目</span></div>
-        <div class="route-stat"><strong>~7h</strong><span>建议探索时长</span></div>
-        <div class="route-stat"><strong>8</strong><span>专属勋章可解锁</span></div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -964,7 +728,7 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
       <h2>让每一次非遗体验<span class="gold">都成为成长</span></h2>
       <p>岭南非遗AI通关护照，以游戏化闯关重新定义非遗研学——可记录、可积累、可沉淀，让岭南文化在青少年心中生根发芽。</p>
       <div class="cta-actions">
-        <a href="#route" class="btn-primary" onclick="startRoute();return false;">
+        <a href="route.html" class="btn-primary">
           立即开启研学之旅
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
@@ -1038,61 +802,6 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Route data
-const routeData = [
-  { name: '粤剧艺术博物馆', img: 'assets/images/stop-yueju.jpg', addr: '📍 恩宁路127号' },
-  { name: '广彩工作室', img: 'assets/images/stop-guangcai.jpg', addr: '📍 永庆大街22号' },
-  { name: '醒狮体验馆', img: 'assets/images/stop-xingshi.jpg', addr: '📍 恩宁路永庆二巷' },
-  { name: '广绣传习所', img: 'assets/images/stop-guangxiu.jpg', addr: '📍 永庆一巷10号' },
-  { name: '牙雕·木雕工坊', img: 'assets/images/stop-yadiao.jpg', addr: '📍 恩宁路73号' },
-  { name: '铜器老字号', img: 'assets/images/stop-tongqi.jpg', addr: '📍 恩宁路57号' },
-  { name: '活字印刷体验馆', img: 'assets/images/stop-huozi.jpg', addr: '📍 永庆坊二期非遗街区' },
-  { name: '永庆坊非遗工作站', img: 'assets/images/stop-gongzuozhan.jpg', addr: '📍 永庆大街3号1层' },
-];
-
-// Unlock route and scroll
-function startRoute() {
-  const section = document.getElementById('route');
-  section.classList.remove('route-locked');
-  const overlay = document.getElementById('routeUnlock');
-  if (overlay) overlay.style.display = 'none';
-  const top = section.getBoundingClientRect().top + window.scrollY - 70;
-  window.scrollTo({ top, behavior: 'smooth' });
-}
-
-// Click marker → show popup + highlight card
-function selectRouteStop(idx) {
-  document.querySelectorAll('.route-marker').forEach(m => m.classList.toggle('active', m.dataset.stop == idx));
-  document.querySelectorAll('.route-card').forEach(c => c.classList.toggle('active', c.dataset.stop == idx));
-
-  const marker = document.querySelector(`.route-marker[data-stop="${idx}"]`);
-  const circle = marker.querySelector('circle');
-  const wrap = document.querySelector('.route-map-wrap');
-  const popup = document.getElementById('routePopup');
-  if (!marker || !wrap || !popup) return;
-
-  const mr = circle.getBoundingClientRect();
-  const wr = wrap.getBoundingClientRect();
-  const x = mr.left + mr.width / 2 - wr.left;
-  const y = mr.top + mr.height / 2 - wr.top;
-
-  const halfW = 110;
-  const clampedX = Math.max(halfW + 8, Math.min(wr.width - halfW - 8, x));
-  popup.style.left = clampedX + 'px';
-  popup.style.top = y + 'px';
-  popup.style.transform = y > wr.height / 2 ? 'translate(-50%, calc(-100% - 30px))' : 'translate(-50%, 30px)';
-
-  document.getElementById('routePopupImg').src = routeData[idx].img;
-  document.getElementById('routePopupImg').alt = routeData[idx].name;
-  document.getElementById('routePopupName').textContent = routeData[idx].name;
-  document.getElementById('routePopupAddr').textContent = routeData[idx].addr;
-  popup.classList.add('show');
-}
-
-function closeRoutePopup() {
-  document.getElementById('routePopup').classList.remove('show');
-}
 
 // Smooth anchor offset
 document.querySelectorAll('a[href^="#"]').forEach(a => {
