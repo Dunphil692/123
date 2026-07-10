@@ -296,6 +296,109 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 .reveal-delay-3 { transition-delay: 0.3s; }
 .reveal-delay-4 { transition-delay: 0.4s; }
 
+/* ===== 打卡徽章 ===== */
+.badge-area { margin-top: 28px; }
+.badge-area h4 { font-size: 16px; margin-bottom: 16px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.badge-area h4 .badge-count { font-size: 13px; font-weight: 400; color: var(--ink-soft); }
+.badge-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+.badge-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; transition: all 0.35s var(--ease); }
+.badge-item:hover { transform: translateY(-3px); }
+.badge-icon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--paper-deep); display: flex; align-items: center; justify-content: center;
+  font-size: 28px; transition: all 0.4s var(--ease);
+  border: 3px solid var(--paper-deep); position: relative;
+  filter: grayscale(1); opacity: 0.45;
+}
+.badge-item.checked .badge-icon {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  border-color: var(--gold); filter: grayscale(0); opacity: 1;
+  box-shadow: 0 4px 20px rgba(201,154,62,0.4);
+  animation: badgePop 0.5s var(--ease);
+}
+@keyframes badgePop {
+  0% { transform: scale(0.6); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+.badge-item.checked .badge-icon::after {
+  content: "✓"; position: absolute; bottom: -4px; right: -4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--crimson); color: #fff; font-size: 12px;
+  display: flex; align-items: center; justify-content: center; font-weight: 700;
+}
+.badge-label { font-size: 11px; color: var(--ink-soft); text-align: center; max-width: 72px; line-height: 1.4; }
+.badge-item.checked .badge-label { color: var(--ink); font-weight: 500; }
+
+/* ===== 闯关挑战按钮 ===== */
+.quiz-challenge { margin-top: 28px; text-align: center; }
+.quiz-start-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 36px; background: linear-gradient(135deg, var(--crimson), var(--crimson-light));
+  color: var(--paper); border-radius: 8px; font-size: 16px; font-weight: 600;
+  cursor: pointer; border: none; font-family: "Noto Sans SC", sans-serif;
+  transition: all 0.35s var(--ease); position: relative; overflow: hidden;
+}
+.quiz-start-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(155,27,27,0.35); }
+.quiz-start-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; filter: grayscale(0.5); }
+.quiz-start-btn .locked-icon { font-size: 18px; }
+.quiz-hint { font-size: 12px; color: var(--ink-soft); margin-top: 8px; }
+
+/* ===== 闯关问答弹窗 ===== */
+.quiz-overlay {
+  position: fixed; inset: 0; z-index: 9999; background: rgba(26,22,20,0.75);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.35s var(--ease);
+  backdrop-filter: blur(4px);
+}
+.quiz-overlay.show { opacity: 1; pointer-events: auto; }
+.quiz-modal {
+  background: var(--white); border-radius: 16px; width: 90%; max-width: 600px;
+  max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(26,22,20,0.35);
+  padding: 36px 32px; position: relative;
+}
+.quiz-close {
+  position: absolute; top: 14px; right: 14px; width: 36px; height: 36px;
+  border-radius: 50%; border: 1px solid var(--paper-deep); background: var(--white);
+  font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-soft); transition: all 0.3s;
+}
+.quiz-close:hover { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+.quiz-progress { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.quiz-progress-bar { flex: 1; height: 6px; border-radius: 100px; background: var(--paper-deep); overflow: hidden; }
+.quiz-progress-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--crimson), var(--gold)); transition: width 0.4s var(--ease); }
+.quiz-progress span { font-size: 13px; color: var(--ink-soft); font-weight: 500; white-space: nowrap; }
+.quiz-question { font-family: "Noto Serif SC", serif; font-size: 20px; font-weight: 700; color: var(--ink); margin-bottom: 24px; line-height: 1.5; }
+.quiz-options { display: flex; flex-direction: column; gap: 12px; }
+.quiz-option {
+  display: block; width: 100%; text-align: left; padding: 14px 18px;
+  border-radius: 10px; border: 2px solid var(--paper-deep); background: var(--white);
+  font-size: 15px; cursor: pointer; font-family: "Noto Sans SC", sans-serif;
+  transition: all 0.25s var(--ease); color: var(--ink);
+}
+.quiz-option:hover { border-color: var(--gold); background: rgba(201,154,62,0.06); }
+.quiz-option.correct { border-color: var(--jade); background: rgba(58,107,90,0.1); color: var(--jade); font-weight: 600; }
+.quiz-option.wrong { border-color: var(--crimson); background: rgba(155,27,27,0.08); color: var(--crimson); }
+.quiz-option:disabled { cursor: default; }
+.quiz-feedback { text-align: center; padding: 12px; font-size: 14px; font-weight: 500; margin-top: 12px; border-radius: 8px; }
+.quiz-feedback.correct { background: rgba(58,107,90,0.1); color: var(--jade); }
+.quiz-feedback.wrong { background: rgba(155,27,27,0.08); color: var(--crimson); }
+.quiz-next { display: block; margin: 20px auto 0; padding: 12px 32px; border-radius: 8px; background: var(--crimson); color: var(--paper); border: none; font-size: 15px; font-weight: 500; cursor: pointer; font-family: "Noto Sans SC", sans-serif; transition: all 0.3s; }
+.quiz-next:hover { background: var(--crimson-light); }
+
+/* ===== 闯关结果 ===== */
+.quiz-result { text-align: center; }
+.quiz-result-icon { font-size: 72px; margin-bottom: 16px; animation: badgePop 0.6s var(--ease); }
+.quiz-result h3 { font-size: 26px; margin-bottom: 8px; }
+.quiz-result .score { font-size: 56px; font-weight: 900; color: var(--crimson); font-family: "Noto Serif SC", serif; }
+.quiz-result .score-sub { font-size: 15px; color: var(--ink-soft); margin-bottom: 20px; }
+.quiz-result-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 20px 0; }
+.quiz-result-stat { padding: 16px; border-radius: 10px; background: var(--paper-dark); text-align: center; }
+.quiz-result-stat strong { display: block; font-size: 24px; font-weight: 900; color: var(--ink); }
+.quiz-result-stat span { font-size: 12px; color: var(--ink-soft); }
+.quiz-retry { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 12px 28px; border-radius: 8px; background: var(--gold); color: var(--white); border: none; font-size: 15px; font-weight: 500; cursor: pointer; font-family: "Noto Sans SC", sans-serif; transition: all 0.3s; }
+.quiz-retry:hover { background: var(--gold-light); transform: translateY(-2px); }
+
 /* ===== Footer ===== */
 .footer { background: var(--ink); color: rgba(247, 241, 230, 0.5); padding: 56px 0 32px; }
 .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding-bottom: 40px; border-bottom: 1px solid rgba(247, 241, 230, 0.08); }
@@ -619,6 +722,57 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
         <div class="route-stat"><strong>~7h</strong><span>建议探索时长</span></div>
         <div class="route-stat"><strong>8</strong><span>专属勋章可解锁</span></div>
       </div>
+
+      <!-- 打卡徽章区域 -->
+      <div class="badge-area reveal reveal-delay-2">
+        <h4>
+          🎖️ 打卡徽章
+          <span class="badge-count" id="badge-count-a">0/8 已点亮</span>
+        </h4>
+        <div class="badge-grid" id="badge-grid-a" data-route="a">
+          <div class="badge-item" data-badge="0">
+            <div class="badge-icon">🎭</div>
+            <div class="badge-label">粤剧</div>
+          </div>
+          <div class="badge-item" data-badge="1">
+            <div class="badge-icon">🎨</div>
+            <div class="badge-label">广彩</div>
+          </div>
+          <div class="badge-item" data-badge="2">
+            <div class="badge-icon">🦁</div>
+            <div class="badge-label">醒狮</div>
+          </div>
+          <div class="badge-item" data-badge="3">
+            <div class="badge-icon">🧵</div>
+            <div class="badge-label">广绣</div>
+          </div>
+          <div class="badge-item" data-badge="4">
+            <div class="badge-icon">🪵</div>
+            <div class="badge-label">牙雕木雕</div>
+          </div>
+          <div class="badge-item" data-badge="5">
+            <div class="badge-icon">🔧</div>
+            <div class="badge-label">铜器</div>
+          </div>
+          <div class="badge-item" data-badge="6">
+            <div class="badge-icon">🔤</div>
+            <div class="badge-label">活字印刷</div>
+          </div>
+          <div class="badge-item" data-badge="7">
+            <div class="badge-icon">🏛️</div>
+            <div class="badge-label">工作站</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 闯关挑战按钮 -->
+      <div class="quiz-challenge reveal reveal-delay-3">
+        <button class="quiz-start-btn" id="quiz-start-a" onclick="startQuiz('a')" disabled>
+          <span class="locked-icon">🔒</span>
+          开始非遗知识闯关
+        </button>
+        <p class="quiz-hint">打卡所有站点后解锁闯关挑战</p>
+      </div>
     </div>
   </div>
 </section>
@@ -760,6 +914,37 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
         <div class="route-stat"><strong>~4h</strong><span>建议探索时长</span></div>
         <div class="route-stat"><strong>3</strong><span>专属勋章可解锁</span></div>
       </div>
+
+      <!-- 打卡徽章区域 -->
+      <div class="badge-area reveal reveal-delay-2">
+        <h4>
+          🎖️ 打卡徽章
+          <span class="badge-count" id="badge-count-b">0/3 已点亮</span>
+        </h4>
+        <div class="badge-grid" id="badge-grid-b" data-route="b">
+          <div class="badge-item" data-badge="0">
+            <div class="badge-icon">🌸</div>
+            <div class="badge-label">素馨花</div>
+          </div>
+          <div class="badge-item" data-badge="1">
+            <div class="badge-icon">🧵</div>
+            <div class="badge-label">广绣海丝</div>
+          </div>
+          <div class="badge-item" data-badge="2">
+            <div class="badge-icon">🏛️</div>
+            <div class="badge-label">五仙观</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 闯关挑战按钮 -->
+      <div class="quiz-challenge reveal reveal-delay-3">
+        <button class="quiz-start-btn" id="quiz-start-b" onclick="startQuiz('b')" disabled>
+          <span class="locked-icon">🔒</span>
+          开始非遗知识闯关
+        </button>
+        <p class="quiz-hint">打卡所有站点后解锁闯关挑战</p>
+      </div>
     </div>
   </div>
 </section>
@@ -876,6 +1061,41 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
         <div class="route-stat"><strong>2+</strong><span>国家级非遗项目</span></div>
         <div class="route-stat"><strong>~5h</strong><span>建议探索时长</span></div>
         <div class="route-stat"><strong>4</strong><span>专属勋章可解锁</span></div>
+      </div>
+
+      <!-- 打卡徽章区域 -->
+      <div class="badge-area reveal reveal-delay-2">
+        <h4>
+          🎖️ 打卡徽章
+          <span class="badge-count" id="badge-count-c">0/4 已点亮</span>
+        </h4>
+        <div class="badge-grid" id="badge-grid-c" data-route="c">
+          <div class="badge-item" data-badge="0">
+            <div class="badge-icon">🖼️</div>
+            <div class="badge-label">通草画</div>
+          </div>
+          <div class="badge-item" data-badge="1">
+            <div class="badge-icon">🧵</div>
+            <div class="badge-label">广绣文创</div>
+          </div>
+          <div class="badge-item" data-badge="2">
+            <div class="badge-icon">🎵</div>
+            <div class="badge-label">岭南古琴</div>
+          </div>
+          <div class="badge-item" data-badge="3">
+            <div class="badge-icon">🖐️</div>
+            <div class="badge-label">手作体验</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 闯关挑战按钮 -->
+      <div class="quiz-challenge reveal reveal-delay-3">
+        <button class="quiz-start-btn" id="quiz-start-c" onclick="startQuiz('c')" disabled>
+          <span class="locked-icon">🔒</span>
+          开始非遗知识闯关
+        </button>
+        <p class="quiz-hint">打卡所有站点后解锁闯关挑战</p>
       </div>
     </div>
   </div>
@@ -1000,6 +1220,41 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
         <div class="route-stat"><strong>~4h</strong><span>建议探索时长</span></div>
         <div class="route-stat"><strong>4</strong><span>专属勋章可解锁</span></div>
       </div>
+
+      <!-- 打卡徽章区域 -->
+      <div class="badge-area reveal reveal-delay-2">
+        <h4>
+          🎖️ 打卡徽章
+          <span class="badge-count" id="badge-count-d">0/4 已点亮</span>
+        </h4>
+        <div class="badge-grid" id="badge-grid-d" data-route="d">
+          <div class="badge-item" data-badge="0">
+            <div class="badge-icon">🖼️</div>
+            <div class="badge-label">广绣屏风</div>
+          </div>
+          <div class="badge-item" data-badge="1">
+            <div class="badge-icon">🎭</div>
+            <div class="badge-label">粤剧戏服</div>
+          </div>
+          <div class="badge-item" data-badge="2">
+            <div class="badge-icon">🦁</div>
+            <div class="badge-label">醒狮文化</div>
+          </div>
+          <div class="badge-item" data-badge="3">
+            <div class="badge-icon">🪨</div>
+            <div class="badge-label">端砚手作</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 闯关挑战按钮 -->
+      <div class="quiz-challenge reveal reveal-delay-3">
+        <button class="quiz-start-btn" id="quiz-start-d" onclick="startQuiz('d')" disabled>
+          <span class="locked-icon">🔒</span>
+          开始非遗知识闯关
+        </button>
+        <p class="quiz-hint">打卡所有站点后解锁闯关挑战</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1121,6 +1376,239 @@ function closeRoutePopup(route) {
   if (popup) popup.classList.remove('show');
 }
 
+// ===== 打卡徽章管理 =====
+const ROUTE_KEYS = ['a', 'b', 'c', 'd'];
+
+function loadCheckins() {
+  const saved = localStorage.getItem('heritage-checkins');
+  return saved ? JSON.parse(saved) : {};
+}
+
+function saveCheckins(checkins) {
+  localStorage.setItem('heritage-checkins', JSON.stringify(checkins));
+}
+
+function updateBadges(route) {
+  const checkins = loadCheckins();
+  const checked = checkins[route] || [];
+  const total = routeDataMap[route].length;
+  const badgeGrid = document.getElementById('badge-grid-' + route);
+  const badgeCount = document.getElementById('badge-count-' + route);
+  const quizBtn = document.getElementById('quiz-start-' + route);
+
+  if (badgeGrid) {
+    badgeGrid.querySelectorAll('.badge-item').forEach(item => {
+      const idx = parseInt(item.dataset.badge);
+      item.classList.toggle('checked', checked.includes(idx));
+    });
+  }
+
+  if (badgeCount) {
+    badgeCount.textContent = checked.length + '/' + total + ' 已点亮';
+  }
+
+  if (quizBtn) {
+    if (checked.length >= total) {
+      quizBtn.disabled = false;
+      quizBtn.querySelector('.locked-icon').textContent = '⚔️';
+      quizBtn.parentElement.querySelector('.quiz-hint').textContent = '全部站点已打卡！点击挑战非遗知识问答';
+    } else {
+      quizBtn.disabled = true;
+      quizBtn.querySelector('.locked-icon').textContent = '🔒';
+      quizBtn.parentElement.querySelector('.quiz-hint').textContent = '打卡所有站点后解锁闯关挑战';
+    }
+  }
+}
+
+function toggleCheckin(route, idx) {
+  const checkins = loadCheckins();
+  if (!checkins[route]) checkins[route] = [];
+  const pos = checkins[route].indexOf(idx);
+  if (pos >= 0) {
+    checkins[route].splice(pos, 1);
+  } else {
+    checkins[route].push(idx);
+  }
+  saveCheckins(checkins);
+  updateBadges(route);
+}
+
+// 修改 selectRouteStop → 同时处理打卡
+const _originalSelectRouteStop = selectRouteStop;
+selectRouteStop = function(route, idx) {
+  _originalSelectRouteStop(route, idx);
+  toggleCheckin(route, idx);
+};
+
+// ===== 闯关问答数据 =====
+const quizData = {
+  a: {
+    title: '荔湾永庆坊·非遗知识闯关',
+    questions: [
+      { q: '粤剧被联合国教科文组织列入什么名录？', opts: ['人类非物质文化遗产代表作名录', '世界记忆遗产名录', '世界自然遗产名录', '非物质文化遗产急需保护名录'], ans: 0 },
+      { q: '广彩瓷器的"织金"工艺指的是什么？', opts: ['在瓷器上镶嵌金丝', '在瓷器上描金彩绘', '用金粉烧制釉面', '将金箔贴于瓷器表面'], ans: 1 },
+      { q: '广东醒狮属于哪个流派？', opts: ['北狮', '南狮', '中狮', '西狮'], ans: 1 },
+      { q: '广绣与哪些绣种并称"中国四大名绣"？', opts: ['苏绣、湘绣、蜀绣', '京绣、湘绣、蜀绣', '苏绣、湘绣、汴绣', '苏绣、京绣、蜀绣'], ans: 0 },
+      { q: '活字印刷术是由谁发明的？', opts: ['蔡伦', '毕昇', '沈括', '张衡'], ans: 1 },
+    ]
+  },
+  b: {
+    title: '北京路农讲所·非遗知识闯关',
+    questions: [
+      { q: '素馨花在历史上是广州的什么？', opts: ['市花', '市树', '市徽', '市鸟'], ans: 0 },
+      { q: '广绣艺术的主要特点是什么？', opts: ['色彩淡雅、构图简洁', '色彩绚丽、构图饱满', '单色刺绣、线条流畅', '水墨风格、写意为主'], ans: 1 },
+      { q: '岭南古琴属于哪个流派？', opts: ['浙派', '川派', '岭南派', '广陵派'], ans: 2 },
+      { q: '通草画是用什么材料作画的？', opts: ['宣纸', '绢帛', '通草纸', '麻布'], ans: 2 },
+      { q: '五仙观供奉的五位仙人牵的是什么动物？', opts: ['五只仙鹤', '五只羊', '五匹神马', '五只麒麟'], ans: 1 },
+    ]
+  },
+  c: {
+    title: '北京路北段骑楼·非遗知识闯关',
+    questions: [
+      { q: '通草画在清代主要用途是什么？', opts: ['宫廷装饰', '外销出口', '宗教祭祀', '民间年画'], ans: 1 },
+      { q: '广绣的基本针法大约有多少种？', opts: ['10多种', '20多种', '30多种', '50多种'], ans: 2 },
+      { q: '岭南古琴的代表曲目《碧涧流泉》表现的是什么意境？', opts: ['大海波涛', '山林溪流', '战场厮杀', '宫廷宴会'], ans: 1 },
+      { q: '活字印刷中"活字"指的是什么？', opts: ['可以活动的文字', '单个可重复使用的字模', '手写的文字', '雕刻在木板上的文字'], ans: 1 },
+      { q: '广式宫灯的传统框架材质是什么？', opts: ['竹子', '红木', '铜铁', '塑料'], ans: 1 },
+    ]
+  },
+  d: {
+    title: '白鹅潭大湾区艺术中心·非遗知识闯关',
+    questions: [
+      { q: '广绣巨幅屏风通常以什么为主要题材？', opts: ['岭南花鸟山水', '北方雪景', '西洋人物', '抽象几何图案'], ans: 0 },
+      { q: '粤剧戏服中"水袖"的作用是什么？', opts: ['保暖', '装饰和表演造型', '遮阳', '储物'], ans: 1 },
+      { q: '醒狮表演中"采青"指的是什么？', opts: ['采摘青菜', '狮子摘取悬挂的生菜（寓意生财）', '采集青色颜料', '一种武术动作'], ans: 1 },
+      { q: '榄雕的原材料是哪种榄核？', opts: ['橄榄核', '乌榄核', '油榄核', '青榄核'], ans: 1 },
+      { q: '端砚产自哪个地方？', opts: ['广东广州', '广东肇庆', '广东佛山', '广东潮州'], ans: 1 },
+    ]
+  }
+};
+
+// ===== 闯关问答逻辑 =====
+let currentQuiz = null;
+let currentQIndex = 0;
+let currentScore = 0;
+let answered = false;
+
+function startQuiz(route) {
+  const checkins = loadCheckins();
+  const checked = checkins[route] || [];
+  const total = routeDataMap[route].length;
+  if (checked.length < total) return;
+  currentQuiz = route;
+  currentQIndex = 0;
+  currentScore = 0;
+  answered = false;
+  renderQuestion();
+  document.getElementById('quiz-overlay').classList.add('show');
+}
+
+function closeQuiz() {
+  document.getElementById('quiz-overlay').classList.remove('show');
+  currentQuiz = null;
+}
+
+function renderQuestion() {
+  const data = quizData[currentQuiz];
+  const q = data.questions[currentQIndex];
+  const total = data.questions.length;
+  const progress = (currentQIndex / total) * 100;
+  const html =
+    '<div class="quiz-progress">' +
+    '<div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:' + progress + '%"></div></div>' +
+    '<span>' + (currentQIndex + 1) + '/' + total + '</span>' +
+    '</div>' +
+    '<div class="quiz-question">' + q.q + '</div>' +
+    '<div class="quiz-options">' +
+    q.opts.map(function(opt, i) {
+      return '<button class="quiz-option" data-idx="' + i + '" onclick="answerQuestion(' + i + ')">' + opt + '</button>';
+    }).join('') +
+    '</div>' +
+    '<div class="quiz-feedback" id="quiz-feedback" style="display:none"></div>' +
+    '<button class="quiz-next" id="quiz-next-btn" style="display:none" onclick="nextQuestion()">下一题</button>';
+  document.getElementById('quiz-content').innerHTML = html;
+  answered = false;
+}
+
+function answerQuestion(idx) {
+  if (answered) return;
+  answered = true;
+  const data = quizData[currentQuiz];
+  const q = data.questions[currentQIndex];
+  const isCorrect = idx === q.ans;
+  const options = document.querySelectorAll('.quiz-option');
+  options.forEach(function(opt) { opt.disabled = true; });
+  options[q.ans].classList.add('correct');
+  if (!isCorrect) {
+    options[idx].classList.add('wrong');
+  }
+  const feedback = document.getElementById('quiz-feedback');
+  feedback.style.display = 'block';
+  if (isCorrect) {
+    feedback.className = 'quiz-feedback correct';
+    feedback.textContent = '✅ 回答正确！';
+    currentScore++;
+  } else {
+    feedback.className = 'quiz-feedback wrong';
+    feedback.textContent = '❌ 回答错误，正确答案是：' + q.opts[q.ans];
+  }
+  const nextBtn = document.getElementById('quiz-next-btn');
+  nextBtn.style.display = 'block';
+  if (currentQIndex >= data.questions.length - 1) {
+    nextBtn.textContent = '查看结果';
+  }
+}
+
+function nextQuestion() {
+  const data = quizData[currentQuiz];
+  const total = data.questions.length;
+  if (currentQIndex >= total - 1) {
+    showResult();
+    return;
+  }
+  currentQIndex++;
+  renderQuestion();
+}
+
+function showResult() {
+  const data = quizData[currentQuiz];
+  const total = data.questions.length;
+  const percentage = Math.round((currentScore / total) * 100);
+  var icon, grade;
+  if (percentage === 100) { icon = '🏆'; grade = '非遗传承大师'; }
+  else if (percentage >= 80) { icon = '🥇'; grade = '非遗知识达人'; }
+  else if (percentage >= 60) { icon = '🥈'; grade = '非遗探索者'; }
+  else if (percentage >= 40) { icon = '🥉'; grade = '非遗入门者'; }
+  else { icon = '📚'; grade = '非遗初学者'; }
+  const html =
+    '<div class="quiz-result">' +
+    '<div class="quiz-result-icon">' + icon + '</div>' +
+    '<h3>' + data.title + ' — 闯关完成！</h3>' +
+    '<div class="score">' + percentage + '<span style="font-size:24px">分</span></div>' +
+    '<div class="score-sub">获得称号：' + grade + '</div>' +
+    '<div class="quiz-result-stats">' +
+    '<div class="quiz-result-stat"><strong>' + currentScore + '</strong><span>答对</span></div>' +
+    '<div class="quiz-result-stat"><strong>' + (total - currentScore) + '</strong><span>答错</span></div>' +
+    '<div class="quiz-result-stat"><strong>' + total + '</strong><span>总题数</span></div>' +
+    '</div>' +
+    '<button class="quiz-retry" onclick="retryQuiz()">🔄 重新挑战</button>' +
+    '<button class="quiz-retry" style="margin-left:12px;background:var(--ink);" onclick="closeQuiz()">✕ 关闭</button>' +
+    '</div>';
+  document.getElementById('quiz-content').innerHTML = html;
+}
+
+function retryQuiz() {
+  currentQIndex = 0;
+  currentScore = 0;
+  answered = false;
+  renderQuestion();
+}
+
+// ===== 页面加载时恢复打卡状态 =====
+document.addEventListener('DOMContentLoaded', function() {
+  ROUTE_KEYS.forEach(function(route) { updateBadges(route); });
+});
+
 // ===== 滚动渐入动画 =====
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -1156,5 +1644,14 @@ document.querySelectorAll('.route-map-wrap').forEach(wrap => {
   });
 });
 </script>
+
+<!-- ===== 闯关问答弹窗 ===== -->
+<div class="quiz-overlay" id="quiz-overlay">
+  <div class="quiz-modal" id="quiz-modal">
+    <button class="quiz-close" onclick="closeQuiz()">&times;</button>
+    <div id="quiz-content"></div>
+  </div>
+</div>
+
 </body>
 </html>
