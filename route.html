@@ -399,6 +399,20 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 .quiz-retry { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 12px 28px; border-radius: 8px; background: var(--gold); color: var(--white); border: none; font-size: 15px; font-weight: 500; cursor: pointer; font-family: "Noto Sans SC", sans-serif; transition: all 0.3s; }
 .quiz-retry:hover { background: var(--gold-light); transform: translateY(-2px); }
 
+/* ===== 标签页式显示：默认隐藏路线详情，点击才显示 ===== */
+.section.route.route-hidden { display: none; }
+.section.route { padding-top: 100px; }
+
+/* ===== 返回路线选择按钮 ===== */
+.route-back-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-bottom: 24px; padding: 10px 20px; border-radius: 6px;
+  border: 1px solid var(--paper-deep); background: var(--white);
+  color: var(--ink-soft); font-size: 14px; font-weight: 500;
+  cursor: pointer; font-family: "Noto Sans SC", sans-serif; transition: all 0.3s;
+}
+.route-back-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+
 /* ===== Footer ===== */
 .footer { background: var(--ink); color: rgba(247, 241, 230, 0.5); padding: 56px 0 32px; }
 .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; padding-bottom: 40px; border-bottom: 1px solid rgba(247, 241, 230, 0.08); }
@@ -476,10 +490,10 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="rsc-highlights">
             <span>粤剧艺术博物馆</span><span>广彩</span><span>醒狮</span><span>广绣</span><span>牙雕木雕</span><span>铜器</span><span>活字印刷</span>
           </div>
-          <a href="#route-a" class="rsc-btn">
+          <button onclick="showRoute('a')" class="rsc-btn">
             选择此路线
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -502,10 +516,10 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="rsc-highlights">
             <span>素馨花文化</span><span>古法合香</span><span>广绣海丝</span><span>岭南古琴</span><span>通草画</span><span>广府小吃</span>
           </div>
-          <a href="#route-b" class="rsc-btn">
+          <button onclick="showRoute('b')" class="rsc-btn">
             选择此路线
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -528,10 +542,10 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="rsc-highlights">
             <span>通草画</span><span>广绣文创</span><span>岭南古琴</span><span>活字拓印</span><span>剪纸</span><span>广式宫灯</span>
           </div>
-          <a href="#route-c" class="rsc-btn">
+          <button onclick="showRoute('c')" class="rsc-btn">
             选择此路线
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -554,10 +568,10 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="rsc-highlights">
             <span>广绣屏风</span><span>粤剧戏服</span><span>醒狮</span><span>榄雕</span><span>石湾陶</span><span>端砚</span>
           </div>
-          <a href="#route-d" class="rsc-btn">
+          <button onclick="showRoute('d')" class="rsc-btn">
             选择此路线
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -565,8 +579,12 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 </section>
 
 <!-- ===== 路线 A：荔湾永庆坊·非遗探索路线 ===== -->
-<section class="section route" id="route-a">
+<section class="section route route-hidden" id="route-a">
   <div class="container">
+    <button class="route-back-btn" onclick="hideAllRoutes()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      返回路线选择
+    </button>
     <div class="reveal">
       <div class="eyebrow">路线 A · 荔湾永庆坊</div>
       <h2 class="section-title">荔湾永庆坊·非遗探索路线</h2>
@@ -778,8 +796,12 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 </section>
 
 <!-- ===== 路线 B：北京路农讲所·非遗探索路线 ===== -->
-<section class="section route route-alt" id="route-b">
+<section class="section route route-alt route-hidden" id="route-b">
   <div class="container">
+    <button class="route-back-btn" onclick="hideAllRoutes()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      返回路线选择
+    </button>
     <div class="reveal">
       <div class="eyebrow">路线 B · 北京路农讲所</div>
       <h2 class="section-title">北京路农讲所·非遗探索路线</h2>
@@ -950,8 +972,12 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 </section>
 
 <!-- ===== 路线 C：北京路北段骑楼·非遗探索路线 ===== -->
-<section class="section route" id="route-c">
+<section class="section route route-hidden" id="route-c">
   <div class="container">
+    <button class="route-back-btn" onclick="hideAllRoutes()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      返回路线选择
+    </button>
     <div class="reveal">
       <div class="eyebrow">路线 C · 北京路北段骑楼</div>
       <h2 class="section-title">北京路北段骑楼·非遗探索路线</h2>
@@ -1102,8 +1128,12 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 </section>
 
 <!-- ===== 路线 D：白鹅潭大湾区艺术中心·非遗探索路线 ===== -->
-<section class="section route route-alt" id="route-d">
+<section class="section route route-alt route-hidden" id="route-d">
   <div class="container">
+    <button class="route-back-btn" onclick="hideAllRoutes()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      返回路线选择
+    </button>
     <div class="reveal">
       <div class="eyebrow">路线 D · 白鹅潭大湾区艺术中心</div>
       <h2 class="section-title">白鹅潭大湾区艺术中心·非遗探索路线</h2>
@@ -1272,11 +1302,11 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
       </div>
       <div class="footer-col">
         <h5>研学路线</h5>
-        <a href="#route-a">荔湾永庆坊路线</a>
-        <a href="#route-b">北京路农讲所路线</a>
-        <a href="#route-c">北京路北段骑楼路线</a>
-        <a href="#route-d">白鹅潭艺术中心路线</a>
-        <a href="#route-select">返回路线选择</a>
+        <a onclick="showRoute('a')" style="cursor:pointer">荔湾永庆坊路线</a>
+        <a onclick="showRoute('b')" style="cursor:pointer">北京路农讲所路线</a>
+        <a onclick="showRoute('c')" style="cursor:pointer">北京路北段骑楼路线</a>
+        <a onclick="showRoute('d')" style="cursor:pointer">白鹅潭艺术中心路线</a>
+        <a onclick="hideAllRoutes()" style="cursor:pointer">返回路线选择</a>
       </div>
       <div class="footer-col">
         <h5>更多</h5>
@@ -1608,6 +1638,43 @@ function retryQuiz() {
 document.addEventListener('DOMContentLoaded', function() {
   ROUTE_KEYS.forEach(function(route) { updateBadges(route); });
 });
+
+// ===== 显示/隐藏路线详情 =====
+function showRoute(route) {
+  // 隐藏所有路线详情
+  ROUTE_KEYS.forEach(function(r) {
+    var el = document.getElementById('route-' + r);
+    if (el) el.classList.add('route-hidden');
+  });
+  // 显示目标路线
+  var target = document.getElementById('route-' + route);
+  if (target) {
+    target.classList.remove('route-hidden');
+    // 重新触发 reveal 动画
+    target.querySelectorAll('.reveal').forEach(function(el) {
+      el.classList.remove('visible');
+      el.classList.add('visible');
+    });
+    // 平滑滚动到路线详情
+    setTimeout(function() {
+      var top = target.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }, 100);
+  }
+}
+
+function hideAllRoutes() {
+  ROUTE_KEYS.forEach(function(r) {
+    var el = document.getElementById('route-' + r);
+    if (el) el.classList.add('route-hidden');
+  });
+  // 滚动回路线选择
+  var select = document.getElementById('route-select');
+  if (select) {
+    var top = select.getBoundingClientRect().top + window.scrollY - 70;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+}
 
 // ===== 滚动渐入动画 =====
 const observer = new IntersectionObserver((entries) => {
