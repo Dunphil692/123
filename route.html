@@ -400,7 +400,7 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 .quiz-retry:hover { background: var(--gold-light); transform: translateY(-2px); }
 
 /* ===== 标签页式显示：默认隐藏路线详情，点击才显示 ===== */
-.section.route.route-hidden { display: none; }
+.section.route.route-hidden { display: none !important; }
 .section.route { padding-top: 100px; }
 
 /* ===== 返回路线选择按钮 ===== */
@@ -412,6 +412,69 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
   cursor: pointer; font-family: "Noto Sans SC", sans-serif; transition: all 0.3s;
 }
 .route-back-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+
+/* ===== 打卡提示文字 ===== */
+.checkin-hint {
+  text-align: center; margin: 24px 0 16px;
+  font-size: 14px; color: var(--ink-soft);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.checkin-hint span {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 16px; border-radius: 100px;
+  background: rgba(201,154,62,0.12); border: 1px dashed var(--gold);
+  color: var(--gold); font-weight: 500; font-size: 13px;
+}
+.checkin-hint .checkin-pulse {
+  display: inline-block; width: 10px; height: 10px;
+  border-radius: 50%; background: var(--gold);
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+/* ===== 站点卡片打卡状态 ===== */
+.route-card { position: relative; }
+.route-card .card-checkin-btn {
+  position: absolute; top: 12px; right: 12px;
+  padding: 4px 12px; border-radius: 100px; border: 1px solid var(--paper-deep);
+  background: var(--white); font-size: 11px; font-weight: 500; color: var(--ink-soft);
+  cursor: pointer; font-family: "Noto Sans SC", sans-serif;
+  transition: all 0.3s; display: flex; align-items: center; gap: 4px;
+  z-index: 2;
+}
+.route-card .card-checkin-btn:hover {
+  border-color: var(--gold); color: var(--gold);
+  background: rgba(201,154,62,0.08);
+}
+.route-card .card-checkin-btn.checked {
+  background: var(--jade); border-color: var(--jade); color: var(--white);
+}
+.route-card.checked-card {
+  border-color: var(--jade) !important;
+  box-shadow: 0 6px 24px rgba(58,107,90,0.15) !important;
+}
+.route-card.checked-card .route-card-num {
+  background: var(--jade) !important; color: var(--white) !important;
+}
+.route-card .card-checked-badge {
+  display: none; position: absolute; top: 12px; left: 12px;
+  padding: 3px 10px; border-radius: 100px; background: var(--jade);
+  color: var(--white); font-size: 11px; font-weight: 600;
+  z-index: 2; align-items: center; gap: 4px;
+}
+.route-card.checked-card .card-checked-badge {
+  display: inline-flex;
+}
+.route-card:not(.checked-card) .card-checkin-btn {
+  animation: hint-pulse 2.5s ease-in-out infinite;
+}
+@keyframes hint-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,154,62,0.2); }
+  50% { box-shadow: 0 0 0 4px rgba(201,154,62,0.1); }
+}
 
 /* ===== Footer ===== */
 .footer { background: var(--ink); color: rgba(247, 241, 230, 0.5); padding: 56px 0 32px; }
@@ -675,8 +738,17 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
       </div>
 
       <!-- 8 个站点详情卡片 -->
+      <div class="checkin-hint">
+        <span>
+          <span class="checkin-pulse"></span>
+          点击站点卡片上的「打卡」按钮，点亮徽章！
+        </span>
+      </div>
+
       <div class="route-cards">
         <div class="route-card" data-stop="0" onclick="selectRouteStop('a',0)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',0)">○ 打卡</button>
           <div class="route-card-num">1</div>
           <h4>粤剧艺术博物馆</h4>
           <div><span class="route-tag heritage">世界级非遗</span><span class="route-tag level">入门关卡</span></div>
@@ -684,6 +756,8 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="route-meta"><span>📍 恩宁路127号</span><span>⏱ 约45分钟</span></div>
         </div>
         <div class="route-card" data-stop="1" onclick="selectRouteStop('a',1)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',1)">○ 打卡</button>
           <div class="route-card-num">2</div>
           <h4>广彩工作室</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
@@ -691,6 +765,8 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="route-meta"><span>📍 永庆大街22号</span><span>⏱ 约60分钟</span></div>
         </div>
         <div class="route-card" data-stop="2" onclick="selectRouteStop('a',2)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',2)">○ 打卡</button>
           <div class="route-card-num">3</div>
           <h4>醒狮体验馆</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
@@ -698,6 +774,8 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="route-meta"><span>📍 恩宁路永庆二巷</span><span>⏱ 约50分钟</span></div>
         </div>
         <div class="route-card" data-stop="3" onclick="selectRouteStop('a',3)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',3)">○ 打卡</button>
           <div class="route-card-num">4</div>
           <h4>广绣传习所</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">高级关卡</span></div>
@@ -705,6 +783,8 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="route-meta"><span>📍 永庆一巷10号</span><span>⏱ 约70分钟</span></div>
         </div>
         <div class="route-card" data-stop="4" onclick="selectRouteStop('a',4)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',4)">○ 打卡</button>
           <div class="route-card-num">5</div>
           <h4>牙雕·木雕工坊</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">高级关卡</span></div>
@@ -712,6 +792,8 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="route-meta"><span>📍 恩宁路73号</span><span>⏱ 约55分钟</span></div>
         </div>
         <div class="route-card" data-stop="5" onclick="selectRouteStop('a',5)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',5)">○ 打卡</button>
           <div class="route-card-num">6</div>
           <h4>铜器老字号</h4>
           <div><span class="route-tag heritage">市级非遗</span><span class="route-tag level">隐藏关卡</span></div>
@@ -719,6 +801,8 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="route-meta"><span>📍 恩宁路57号</span><span>⏱ 约40分钟</span></div>
         </div>
         <div class="route-card" data-stop="6" onclick="selectRouteStop('a',6)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',6)">○ 打卡</button>
           <div class="route-card-num">7</div>
           <h4>活字印刷体验馆</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
@@ -726,6 +810,8 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
           <div class="route-meta"><span>📍 永庆坊二期非遗街区</span><span>⏱ 约45分钟</span></div>
         </div>
         <div class="route-card" data-stop="7" onclick="selectRouteStop('a',7)">
+          <div class="card-checked-badge">✓ 已打卡</div>
+          <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('a',7)">○ 打卡</button>
           <div class="route-card-num">8</div>
           <h4>永庆坊非遗工作站</h4>
           <div><span class="route-tag heritage">综合体验</span><span class="route-tag level">终极关卡</span></div>
@@ -883,10 +969,19 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
       </div>
 
       <!-- 站点详情卡片（含午餐推荐） -->
+      <div class="checkin-hint">
+        <span>
+          <span class="checkin-pulse"></span>
+          点击站点卡片上的「打卡」按钮，点亮徽章！
+        </span>
+      </div>
+
       <div class="route-cards cols-3">
         <!-- 站点 1 -->
         <div class="route-card" data-stop="0" onclick="selectRouteStop('b',0)">
-          <div class="route-card-num">1</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('b',0)">○ 打卡</button>
+            <div class="route-card-num">1</div>
           <h4>素馨花非遗体验馆</h4>
           <div><span class="route-tag heritage">广府素馨花文化</span><span class="route-tag level">入门关卡</span></div>
           <p>广府素馨花文化、古法合香、香牌、传统花艺。先逛展厅了解素馨花传说，想做香牌、花束可现场DIY。</p>
@@ -909,7 +1004,9 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 
         <!-- 站点 2 -->
         <div class="route-card" data-stop="1" onclick="selectRouteStop('b',1)">
-          <div class="route-card-num">2</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('b',1)">○ 打卡</button>
+            <div class="route-card-num">2</div>
           <h4>古氏书舍·广绣海丝非遗体验空间</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
           <p>广绣国家级非遗。清代古祠堂拍照很出片，可选团扇刺绣、手帕绣体验，有传承人手把手教学。</p>
@@ -920,7 +1017,9 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 
         <!-- 站点 3 -->
         <div class="route-card" data-stop="2" onclick="selectRouteStop('b',2)">
-          <div class="route-card-num">3</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('b',2)">○ 打卡</button>
+            <div class="route-card-num">3</div>
           <h4>五仙观+南粤先贤馆</h4>
           <div><span class="route-tag heritage">广府民俗</span><span class="route-tag level">终极关卡</span></div>
           <p>岭南古琴、通草画、剪纸、广府民俗。南粤先贤馆免费参观有小型非遗手作台；五仙观内可试弹古琴，周末常有剪纸、通草画体验。</p>
@@ -1053,28 +1152,36 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
 
       <div class="route-cards">
         <div class="route-card" data-stop="0" onclick="selectRouteStop('c',0)">
-          <div class="route-card-num">1</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('c',0)">○ 打卡</button>
+            <div class="route-card-num">1</div>
           <h4>通草画体验馆</h4>
           <div><span class="route-tag heritage">省级非遗</span><span class="route-tag level">入门关卡</span></div>
           <p>手绘岭南通草花灯、花鸟摆件。以通草纸为媒，学习岭南外销画技法，亲手绘制一盏通草花灯或花鸟摆件带回家。</p>
           <div class="route-meta"><span>📍 北京路北段骑楼街12号</span><span>⏱ 约50分钟</span></div>
         </div>
         <div class="route-card" data-stop="1" onclick="selectRouteStop('c',1)">
-          <div class="route-card-num">2</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('c',1)">○ 打卡</button>
+            <div class="route-card-num">2</div>
           <h4>广绣文创馆</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
           <p>香囊、刺绣书签 DIY。在传承人指导下学习广绣基本针法，亲手绣制一个岭南花卉香囊或精美刺绣书签。</p>
           <div class="route-meta"><span>📍 北京路北段骑楼街28号</span><span>⏱ 约60分钟</span></div>
         </div>
         <div class="route-card" data-stop="2" onclick="selectRouteStop('c',2)">
-          <div class="route-card-num">3</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('c',2)">○ 打卡</button>
+            <div class="route-card-num">3</div>
           <h4>岭南古琴空间</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">高级关卡</span></div>
           <p>试弹古琴、香牌合香。在雅致空间中聆听岭南古琴名曲，亲手试弹古琴，并制作一枚专属古法香牌。</p>
           <div class="route-meta"><span>📍 北京路北段骑楼街45号</span><span>⏱ 约55分钟</span></div>
         </div>
         <div class="route-card" data-stop="3" onclick="selectRouteStop('c',3)">
-          <div class="route-card-num">4</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('c',3)">○ 打卡</button>
+            <div class="route-card-num">4</div>
           <h4>活字拓印·剪纸·宫灯手作</h4>
           <div><span class="route-tag heritage">综合体验</span><span class="route-tag level">终极关卡</span></div>
           <p>活字拓印、剪纸、广式宫灯手作。一站式体验三项传统技艺：排版拓印古诗、剪出岭南窗花、组装一盏广式宫灯。</p>
@@ -1213,30 +1320,45 @@ h1, h2, h3, h4 { font-family: "Noto Serif SC", serif; font-weight: 700; line-hei
         </div>
       </div>
 
+      <div class="checkin-hint">
+        <span>
+          <span class="checkin-pulse"></span>
+          点击站点卡片上的「打卡」按钮，点亮徽章！
+        </span>
+      </div>
+
       <div class="route-cards">
         <div class="route-card" data-stop="0" onclick="selectRouteStop('d',0)">
-          <div class="route-card-num">1</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('d',0)">○ 打卡</button>
+            <div class="route-card-num">1</div>
           <h4>广绣巨幅屏风展区</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">入门关卡</span></div>
           <p>一层主展厅，陈列广绣巨幅屏风 masterpiece。精美绝伦的丝线绣出岭南花鸟、山水人物，感受广绣"针尖上的艺术"。展区设有互动屏幕，可放大查看针法细节。</p>
           <div class="route-meta"><span>📍 艺术中心一层主展厅</span><span>⏱ 约40分钟</span></div>
         </div>
         <div class="route-card" data-stop="1" onclick="selectRouteStop('d',1)">
-          <div class="route-card-num">2</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('d',1)">○ 打卡</button>
+            <div class="route-card-num">2</div>
           <h4>粤剧戏服·醒狮文化展区</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">进阶关卡</span></div>
           <p>二层综合展厅，粤剧华丽戏服与醒狮文化同台呈现。近距离欣赏龙凤刺绣戏袍、珠翠头饰，以及威武的醒狮道具。周末设有戏服试穿和醒狮鼓乐体验。</p>
           <div class="route-meta"><span>📍 艺术中心二层综合展厅</span><span>⏱ 约50分钟</span></div>
         </div>
         <div class="route-card" data-stop="2" onclick="selectRouteStop('d',2)">
-          <div class="route-card-num">3</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('d',2)">○ 打卡</button>
+            <div class="route-card-num">3</div>
           <h4>榄雕·石湾陶艺展区</h4>
           <div><span class="route-tag heritage">省级非遗</span><span class="route-tag level">高级关卡</span></div>
           <p>三层精品展厅，榄核微雕的鬼斧神工与石湾陶塑的生动传神交相辉映。显微镜下观赏榄雕细节，了解石湾陶"石湾公仔"的烧制技艺与岭南人物造型特色。</p>
           <div class="route-meta"><span>📍 艺术中心三层精品展厅</span><span>⏱ 约45分钟</span></div>
         </div>
         <div class="route-card" data-stop="3" onclick="selectRouteStop('d',3)">
-          <div class="route-card-num">4</div>
+            <div class="card-checked-badge">✓ 已打卡</div>
+            <button class="card-checkin-btn" onclick="event.stopPropagation();toggleCheckin('d',3)">○ 打卡</button>
+            <div class="route-card-num">4</div>
           <h4>端砚·非遗手工互动区</h4>
           <div><span class="route-tag heritage">国家级非遗</span><span class="route-tag level">终极关卡</span></div>
           <p>四层互动体验区，展示端砚雕刻艺术与文房四宝文化。亲手体验磨墨、拓印，在传承人指导下尝试端砚雕刻基础技法，制作一方属于自己的mini端砚纪念品。</p>
@@ -1461,13 +1583,32 @@ function toggleCheckin(route, idx) {
   }
   saveCheckins(checkins);
   updateBadges(route);
+  updateCardCheckinStates(route);
 }
 
-// 修改 selectRouteStop → 同时处理打卡
+function updateCardCheckinStates(route) {
+  const checkins = loadCheckins();
+  const checked = checkins[route] || [];
+  const routeSection = document.getElementById('route-' + route);
+  if (!routeSection) return;
+
+  routeSection.querySelectorAll('.route-card').forEach(function(card) {
+    const idx = parseInt(card.dataset.stop);
+    const isChecked = checked.includes(idx);
+    card.classList.toggle('checked-card', isChecked);
+
+    const btn = card.querySelector('.card-checkin-btn');
+    if (btn) {
+      btn.classList.toggle('checked', isChecked);
+      btn.textContent = isChecked ? '✓ 已打卡' : '○ 打卡';
+    }
+  });
+}
+
+// 修改 selectRouteStop → 仅显示弹窗，不自动打卡（打卡需点击专用按钮）
 const _originalSelectRouteStop = selectRouteStop;
 selectRouteStop = function(route, idx) {
   _originalSelectRouteStop(route, idx);
-  toggleCheckin(route, idx);
 };
 
 // ===== 闯关问答数据 =====
@@ -1636,7 +1777,10 @@ function retryQuiz() {
 
 // ===== 页面加载时恢复打卡状态 =====
 document.addEventListener('DOMContentLoaded', function() {
-  ROUTE_KEYS.forEach(function(route) { updateBadges(route); });
+  ROUTE_KEYS.forEach(function(route) {
+    updateBadges(route);
+    updateCardCheckinStates(route);
+  });
 });
 
 // ===== 显示/隐藏路线详情 =====
@@ -1650,6 +1794,8 @@ function showRoute(route) {
   var target = document.getElementById('route-' + route);
   if (target) {
     target.classList.remove('route-hidden');
+    // 更新卡片打卡状态
+    updateCardCheckinStates(route);
     // 重新触发 reveal 动画
     target.querySelectorAll('.reveal').forEach(function(el) {
       el.classList.remove('visible');
